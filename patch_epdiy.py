@@ -327,21 +327,30 @@ def patch_epdiy_source(epdiy_dir):
 
 static void i2s_start_frame() {"""
         if "static void busy_delay" not in content:
+            if old_start_frame not in content:
+                raise Exception("Patch failed: Could not find 'i2s_start_frame' in render_i2s.c")
             content = content.replace(old_start_frame, new_start_frame, 1)
 
-        content = content.replace(
-            "pulse_ckv_us(1000, 100, false);",
-            "busy_delay(240);\n    pulse_ckv_us(10, 10, false);"
-        )
+        pulse_target = "pulse_ckv_us(1000, 100, false);"
+        if pulse_target in content:
+            content = content.replace(pulse_target, "busy_delay(240);\n    pulse_ckv_us(10, 10, false);")
+        else:
+            if "busy_delay(240);" not in content:
+                raise Exception("Patch failed: Could not find target pulse_ckv_us in render_i2s.c")
 
-        content = content.replace(
-            "reorder_line_buffer((uint32_t*)i2s_get_current_buffer(), ctx->display_width / 4);",
-            "#ifndef CONFIG_IDF_TARGET_ESP32S3\n        reorder_line_buffer((uint32_t*)i2s_get_current_buffer(), ctx->display_width / 4);\n#endif"
-        )
-        content = content.replace(
-            "reorder_line_buffer((uint32_t*)row, line_bytes);",
-            "#ifndef CONFIG_IDF_TARGET_ESP32S3\n    reorder_line_buffer((uint32_t*)row, line_bytes);\n#endif"
-        )
+        reorder_target_1 = "reorder_line_buffer((uint32_t*)i2s_get_current_buffer(), ctx->display_width / 4);"
+        if reorder_target_1 in content:
+            content = content.replace(
+                reorder_target_1,
+                "#ifndef CONFIG_IDF_TARGET_ESP32S3\n        " + reorder_target_1 + "\n#endif"
+            )
+
+        reorder_target_2 = "reorder_line_buffer((uint32_t*)row, line_bytes);"
+        if reorder_target_2 in content:
+            content = content.replace(
+                reorder_target_2,
+                "#ifndef CONFIG_IDF_TARGET_ESP32S3\n    " + reorder_target_2 + "\n#endif"
+            )
 
         with open(render_i2s_path, "w", encoding="utf-8") as f:
             f.write(content)
