@@ -18,29 +18,45 @@ By porting EPDiy's state-of-the-art rendering pipeline to this hardware, this pr
 
 ---
 
-### 🔗 Hardware & Official Documentation References
+### 🔗 Reference Repositories & Hardware Documentation
 
-This project is built specifically for the LilyGo T5 4.7" ESP32-S3 development board. For official hardware schematics, pin definitions, and product documentation, refer to:
+- **Official EPDiy Core Project**: [https://github.com/vroland/epdiy](https://github.com/vroland/epdiy)
 - **Official LilyGo T5 Series Wiki**: [https://wiki.lilygo.cc/zh/products/t5-series/t5-e-paper/](https://wiki.lilygo.cc/zh/products/t5-series/t5-e-paper/)
 - **Official LilyGo-EPD47 Repository**: [https://github.com/Xinyuan-LilyGO/LilyGo-EPD47](https://github.com/Xinyuan-LilyGO/LilyGo-EPD47)
 
 ---
 
+### ❓ Why Official EPDiy Does Not Support LilyGo T5-S3 Out-of-the-Box
+
+If you try to run the official [vroland/epdiy](https://github.com/vroland/epdiy) repository directly on a LilyGo T5 4.7" ESP32-S3 board, the screen will remain completely blank or scramble pixels due to fundamental hardware and architectural mismatches:
+
+1. **74HC4094 Shift Register vs. Direct GPIO Routing**:
+   * **EPDiy Official Hardware (EPDiy v7)** connects all e-paper control lines (row latch `LEH`, gate frame start `STV`, high-voltage power rails `POS_EN`/`NEG_EN`) directly to ESP32-S3 GPIOs.
+   * **LilyGo T5-S3** routes `LEH`, `STV`, and `POWER_EN` through a **74HC4094 serial shift register** (driven via `CFG_CLK`, `CFG_DATA`, and `CFG_STR`) to minimize GPIO count. Official EPDiy has no shift-register latching logic in its S3 driver.
+2. **Hardcoded Continuous DMA on ESP32-S3**:
+   * Official EPDiy's ESP32-S3 driver (`output_lcd/lcd_driver.c`) is hardcoded to use autonomous continuous DMA streaming across the entire display frame without per-row synchronization hooks.
+   * LilyGo T5-S3 requires **row-by-row synchronized transmission** where a fast 74HC4094 strobe pulse must be sent after every single row of pixel data is pushed.
+3. **Byte Ordering on ESP32-S3 Intel 8080 Bus**:
+   * Legacy EPDiy performs 16-bit halfword swapping (`reorder_line_buffer`) to accommodate the old ESP32 I2S FIFO DMA quirks.
+   * The ESP32-S3 Intel 8080 LCD peripheral transmits bytes sequentially in natural memory order. Running `reorder_line_buffer` on S3 transposes adjacent groups of pixels, corrupting text and shapes horizontally into double-vision duplicates.
+4. **ESP-IDF 5.3+ I2C API Incompatibility with Arduino Core**:
+   * Upstream EPDiy recently migrated to the new ESP-IDF 5.3+ I2C Master driver (`#include <driver/i2c_master.h>`) for its own v6/v7 boards, causing compilation errors on Arduino ESP32 2.0.x (which is based on ESP-IDF 4.4).
+
+---
+
 ### 🛡️ Seamless Upstream Tracking via Automated Pre-Build Fixes
 
-A key architectural highlight of this project is **Zero Code Forking / Zero Manual Maintenance**:
+To solve these incompatibilities while allowing developers to **always stay up-to-date with upstream EPDiy releases**, this project uses an automated pre-build fix architecture:
 
 1. **Direct Upstream Tracking**:
-   `platformio.ini` directly references the official upstream EPDiy repository:
+   [`platformio.ini`](platformio.ini) directly references the official upstream EPDiy repository:
    ```ini
    lib_deps =
        https://github.com/vroland/epdiy.git
    ```
 2. **Automated External Hardware Patch (`patch_epdiy.py`)**:
-   Upstream EPDiy was originally designed for EPDiy v7 boards where all pins directly connect to ESP32 GPIOs. In contrast, LilyGo T5-S3 routes the row latch (`LEH`), frame start (`STV`), and high-voltage power gates through a **74HC4094 serial shift register**.
-3. **How It Works**:
-   During every compilation or library update, PlatformIO executes `extra_scripts = pre:patch_epdiy.py`. This script automatically injects the ESP32-S3 Intel 8080 parallel LCD bus driver, RMT gate pulse clocking, and 74HC4094 shift register row-latching pipeline into the pulled EPDiy code.
-4. **Future-Proof**:
+   PlatformIO executes `extra_scripts = pre:patch_epdiy.py` before compilation. This script automatically injects the ESP32-S3 Intel 8080 row-level LCD driver, 74HC4094 shift register timing, RMT gate pulse clocking, and IDF 4.4 compatibility stubs into the pulled EPDiy code.
+3. **Future-Proof**:
    Whenever upstream EPDiy releases new algorithms, waveforms, or performance enhancements, you can update without fear of losing hardware adaptations.
 
 ---
@@ -68,7 +84,7 @@ A key architectural highlight of this project is **Zero Code Forking / Zero Manu
 ### 🚀 Build & Flash Instructions
 
 ```bash
-# 1. Build project (PlatformIO will automatically pull EPDiy and apply patch)
+# 1. Build project (PlatformIO will automatically pull upstream EPDiy and apply patch)
 pio run
 
 # 2. Upload firmware to LilyGo T5-S3
@@ -97,11 +113,29 @@ LilyGo 原厂驱动虽然提供了基础的绘图功能，但缺乏完善的灰�
 
 ---
 
-### 🔗 开发板官方资料与参考仓库
+### 🔗 参考代码仓库与开发板官方资料
 
-本项目专为 LilyGo T5 4.7" ESP32-S3 开发板定制开发，官方硬件原理图、引脚定义和产品维基请参考：
+- **EPDiy 官方核心项目**：[https://github.com/vroland/epdiy](https://github.com/vroland/epdiy)
 - **LilyGo 官方 T5 系列产品 Wiki**：[https://wiki.lilygo.cc/zh/products/t5-series/t5-e-paper/](https://wiki.lilygo.cc/zh/products/t5-series/t5-e-paper/)
 - **LilyGo-EPD47 官方代码仓库**：[https://github.com/Xinyuan-LilyGO/LilyGo-EPD47](https://github.com/Xinyuan-LilyGO/LilyGo-EPD47)
+
+---
+
+### ❓ 为什么官方 EPDiy 原版无法直接驱动 LilyGo T5-S3？
+
+如果您直接拉取官方 [vroland/epdiy](https://github.com/vroland/epdiy) 仓库并在 LilyGo T5 4.7" ESP32-S3 上运行，屏幕会处于**完全黑屏无反应**或**文字乱码重影**的状态，根本原因在于硬件架构与底层驱动的差异：
+
+1. **74HC4094 移位寄存器控制 vs 直连 GPIO 方案**：
+   * **EPDiy 官方硬件（如 EPDiy v7）** 将行数据锁存（`LEH`）、场同步脉冲（`STV`）和正负高压供电控制线全部**直连在 ESP32-S3 的物理 GPIO** 上。
+   * **LilyGo T5-S3 硬件** 出于节省 GPIO 引脚的考虑，将 `LEH`、`STV` 和高压供电线串行挂接在了一颗 **74HC4094 移位寄存器芯片** 上（通过 `CFG_CLK`、`CFG_DATA`、`CFG_STR` 控制）。官方 EPDiy 库的 S3 驱动完全没有这套移位控制逻辑。
+2. **ESP32-S3 驱动被硬编码为全自动连续 DMA**：
+   * 官方 EPDiy 的 S3 渲染管道（`output_lcd/lcd_driver.c`）硬编码为一整帧连续触发 DMA，内部没有“每推完一行数据发送一次行锁存脉冲”的时序钩子。
+   * LilyGo T5-S3 需要**逐行（Row-by-Row）受控发送**，每传输一行 8080 并行总线数据，必须紧接着给 74HC4094 发送高速锁存脉冲，屏端才能接收到数据。
+3. **Intel 8080 总线与旧版 I2S 的字节顺序差异**：
+   * 旧版 EPDiy 为了适应 ESP32 I2S FIFO 硬件特性，调用了 `reorder_line_buffer`（每两字节调换一次顺序）。
+   * ESP32-S3 的 Intel 8080 LCD 并行外设是严格按内存顺序发出的。如果执行重排，会导致**相邻 8 个像素与后 8 个像素左右颠倒**，文字出现双重撕裂与乱码。
+4. **ESP-IDF 5.3+ I2C 驱动更新导致 Arduino 编译报错**：
+   * 官方 EPDiy 最新主干为了其自研板全面采用了 ESP-IDF 5.3+ 的 `i2c_master.h` 新驱动，这会导致在基于 IDF 4.4 的 Arduino ESP32 2.0.x 环境下编译直接报错中断。
 
 ---
 
@@ -110,16 +144,14 @@ LilyGo 原厂驱动虽然提供了基础的绘图功能，但缺乏完善的灰�
 为了实现“**既能享受官方 EPDiy 最新代码库更新，又不需要手动反复修改第三方库**”的目标，本项目采用了解耦的外围自动补丁架构：
 
 1. **直接引用官方最新 Git 主干**：
-   在 [`platformio.ini`](file:///F:/BaiduNetdiskDownload/SoftwareProject/eink-screen/EPDiy%20for%20LilyGoT5S3/platformio.ini) 中直接配置官方库：
+   在 [`platformio.ini`](platformio.ini) 中直接配置官方库：
    ```ini
    lib_deps =
        https://github.com/vroland/epdiy.git
    ```
-2. **为什么需要外围自动 Fix 脚本 (`patch_epdiy.py`)**：
-   官方 EPDiy 原版代码是针对其自研的 EPDiy v7 硬件编写的（所有控制引脚直连 ESP32 GPIO）。而 LilyGo T5-S3 硬件出于引脚复用设计，将行数据锁存（`LEH`）、场同步脉冲（`STV`）和正负高压供电集成在了一颗 **74HC4094 移位寄存器芯片** 上。
-3. **自动化构建流程**：
-   每次执行编译或更新库时，PlatformIO 会通过 `extra_scripts = pre:patch_epdiy.py` 自动执行修补脚本，毫秒级将 ESP32-S3 Intel 8080 并行总线、RMT 脉冲引擎和 74HC4094 逐行锁存管道注入到官方代码中。
-4. **长久维护优势**：
+2. **自动化预编译修补（`patch_epdiy.py`）**：
+   每次执行编译或更新库时，PlatformIO 会通过 `extra_scripts = pre:patch_epdiy.py` 自动执行修补脚本，毫秒级将 ESP32-S3 Intel 8080 并行总线驱动、RMT 门极时钟脉冲引擎、74HC4094 逐行锁存管道和 IDF 4.4 兼容桩自动注入到拉取的官方代码中。
+3. **长久维护优势**：
    项目主目录保持极简干净，无冗余第三方源码。上游 EPDiy 发布新算法或修复时，无需任何手动介入即可自动更新并无缝构建。
 
 ---
