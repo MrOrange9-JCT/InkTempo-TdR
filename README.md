@@ -28,7 +28,7 @@ By porting EPDiy's state-of-the-art rendering pipeline to this hardware, this pr
 
 ### ❓ Why Official EPDiy Does Not Support LilyGo T5-S3 Out-of-the-Box
 
-If you try to run the official [vroland/epdiy](https://github.com/vroland/epdiy) repository directly on a LilyGo T5 4.7" ESP32-S3 board, the screen will remain completely blank or scramble pixels due to fundamental hardware and architectural mismatches:
+If you try to run the official [vroland/epdiy](https://github.com/vroland/epdiy) repository directly on a LilyGo T5 4.7" ESP32-S3 board, the screen will remain completely blank or scramble pixels due to fundamental hardware and architectural mismatches (as discussed in community issues like [vroland/epdiy#203](https://github.com/vroland/epdiy/issues/203) and [vroland/epdiy#381](https://github.com/vroland/epdiy/issues/381)):
 
 1. **74HC4094 Shift Register vs. Direct GPIO Routing**:
    * **EPDiy Official Hardware (EPDiy v7)** connects all e-paper control lines (row latch `LEH`, gate frame start `STV`, high-voltage power rails `POS_EN`/`NEG_EN`) directly to ESP32-S3 GPIOs.
@@ -123,7 +123,7 @@ LilyGo 原厂驱动虽然提供了基础的绘图功能，但缺乏完善的灰�
 
 ### ❓ 为什么官方 EPDiy 原版无法直接驱动 LilyGo T5-S3？
 
-如果您直接拉取官方 [vroland/epdiy](https://github.com/vroland/epdiy) 仓库并在 LilyGo T5 4.7" ESP32-S3 上运行，屏幕会处于**完全黑屏无反应**或**文字乱码重影**的状态，根本原因在于硬件架构与底层驱动的差异：
+如果您直接拉取官方 [vroland/epdiy](https://github.com/vroland/epdiy) 仓库并在 LilyGo T5 4.7" ESP32-S3 上运行，屏幕会处于**完全黑屏无反应**或**文字乱码重影**的状态，根本原因在于硬件架构与底层驱动的差异（正如在开源社区 [vroland/epdiy#203](https://github.com/vroland/epdiy/issues/203) 和 [vroland/epdiy#381](https://github.com/vroland/epdiy/issues/381) 等 Issue 中所讨论的）：
 
 1. **74HC4094 移位寄存器控制 vs 直连 GPIO 方案**：
    * **EPDiy 官方硬件（如 EPDiy v7）** 将行数据锁存（`LEH`）、场同步脉冲（`STV`）和正负高压供电控制线全部**直连在 ESP32-S3 的物理 GPIO** 上。
