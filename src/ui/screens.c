@@ -195,6 +195,8 @@ void create_screen_main() {
                     lv_obj_set_style_border_width(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     create_user_widget_tasks_screen(tasks_tile, 26);
                 }
+                // Hide scrollbar
+                lv_obj_set_scrollbar_mode(parent_obj, LV_SCROLLBAR_MODE_OFF);
                 // Set the starting tile to pomodoro screen
                 lv_obj_clear_flag(parent_obj, LV_OBJ_FLAG_SCROLL_MOMENTUM);
                 lv_obj_set_tile(parent_obj, objects.obj1, LV_ANIM_OFF);
@@ -400,7 +402,7 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_pad_left(obj, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_max_width(obj, 580, LV_PART_MAIN | LV_STATE_DEFAULT);
-                            lv_label_set_text_static(obj, "Estudiar per la pujada i no procastinar fent EEZ");
+                            lv_label_set_text_static(obj, "Estudiar per la pujada de nota");
                         }
                         {
                             lv_obj_t *obj = lv_label_create(parent_obj);

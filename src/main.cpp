@@ -42,6 +42,7 @@ static void update_page_buttons() {
 }
 
 static void page_button_event(lv_event_t *event) {
+    // Registrar l'event de clic del botó < o > i canviar la pàgina
     int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
     int8_t next_page = (int8_t)current_page + direction;
     if (next_page < 0 || next_page > 2) return;
@@ -55,49 +56,40 @@ static void page_button_event(lv_event_t *event) {
 static void create_page_buttons() {
     // Crear botons de navegació a la pantalla principal
 
-    // Botó "Anterior"
+    // Botó anterior "<"
     previous_page_button = lv_btn_create(objects.main);
     lv_obj_set_pos(previous_page_button, 0, 51);
     lv_obj_set_size(previous_page_button, 64, 438);
     lv_obj_add_event_cb(previous_page_button, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)-1);
-    lv_obj_set_style_bg_color(previous_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(previous_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(previous_page_button, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(previous_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(previous_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_border_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_shadow_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_t *previous_label = lv_label_create(previous_page_button);
     lv_label_set_text(previous_label, "<");
-    lv_obj_set_style_text_font(previous_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(previous_label, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_opa(previous_label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_center(previous_label);
 
-    // Botó "Següent"
+    // Botó següent ">"
     next_page_button = lv_btn_create(objects.main);
     lv_obj_set_pos(next_page_button, 896, 51);
     lv_obj_set_size(next_page_button, 64, 438);
     lv_obj_add_event_cb(next_page_button, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)1);
-    lv_obj_set_style_bg_color(next_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(next_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(next_page_button, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(next_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(next_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_border_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_shadow_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
     lv_obj_t *next_label = lv_label_create(next_page_button);
     lv_label_set_text(next_label, ">");
-    lv_obj_set_style_text_font(next_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(next_label, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_opa(next_label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_center(next_label);
+
+    // Aplicar estils als botons i les etiquetes (INVISIBLE; SENSE ANIMACIÓ)
+    for (lv_obj_t *btn : {previous_page_button, next_page_button}) {
+        for (lv_state_t state : {LV_STATE_DEFAULT, LV_STATE_PRESSED}) {
+            lv_obj_set_style_bg_color(btn, lv_color_hex(0xffffff), LV_PART_MAIN | state);
+            lv_obj_set_style_bg_opa(btn, LV_OPA_TRANSP, LV_PART_MAIN | state);
+            lv_obj_set_style_border_width(btn, 0, LV_PART_MAIN | state);
+            lv_obj_set_style_shadow_width(btn, 0, LV_PART_MAIN | state);
+        }
+        lv_obj_set_style_radius(btn, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(btn, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+        lv_obj_t *label = lv_obj_get_child(btn, 0);
+        lv_obj_set_style_text_font(label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(label, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_opa(label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_center(label);
+    }
+
     update_page_buttons();
 }
 
