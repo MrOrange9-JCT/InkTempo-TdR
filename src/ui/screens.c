@@ -172,7 +172,7 @@ void create_screen_main() {
                 {
                     // pomodoro_screen (CENTER)
                     lv_obj_t *pomodoro_tile = lv_tileview_add_tile(parent_obj, 1, 0, LV_DIR_HOR);
-                    objects.obj2 = pomodoro_tile;
+                    objects.obj1 = pomodoro_tile;
                     lv_obj_set_size(pomodoro_tile, 960, 438);
                     lv_obj_set_style_pad_left(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -185,7 +185,7 @@ void create_screen_main() {
                 {
                     // tasks_screen (RIGHT)
                     lv_obj_t *tasks_tile = lv_tileview_add_tile(parent_obj, 2, 0, LV_DIR_LEFT);
-                    objects.obj1 = tasks_tile;
+                    objects.obj2 = tasks_tile;
                     lv_obj_set_size(tasks_tile, 960, 438);
                     lv_obj_set_style_pad_left(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -195,6 +195,9 @@ void create_screen_main() {
                     lv_obj_set_style_border_width(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     create_user_widget_tasks_screen(tasks_tile, 26);
                 }
+                // Set the starting tile to pomodoro screen
+                lv_obj_clear_flag(parent_obj, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+                lv_obj_set_tile(parent_obj, objects.obj1, LV_ANIM_OFF);
             }
         }
     }
@@ -903,4 +906,6 @@ void create_screens() {
     // Initialize screens
     // Create screens
     create_screen_main();
+    
+    // Set the starting tile to pomodoro screen
 }

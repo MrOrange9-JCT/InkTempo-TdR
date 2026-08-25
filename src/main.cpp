@@ -8,6 +8,7 @@
 
 #include "lilygo_t5s3_board.h"
 #include "ui/ui.h"
+#include "ui/fonts.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -19,9 +20,84 @@ static uint8_t *epd_framebuffer;
 
 static uint8_t *gray_buffer;
 static volatile bool frame_pending;
+static volatile bool touch_active;
 static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
+static uint8_t current_page = 1;
+
+static void page_button_event(lv_event_t *event) {
+    int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
+    int8_t next_page = (int8_t)current_page + direction;
+    if (next_page < 0 || next_page > 2) return;
+
+    current_page = (uint8_t)next_page;
+    lv_obj_t *tiles[] = { objects.obj0, objects.obj1, objects.obj2 };
+    lv_obj_set_tile(objects.content, tiles[current_page], LV_ANIM_OFF);
+}
+
+static void create_page_buttons() {
+    // Crear botons de navegació a la pantalla principal
+
+    // Botó "Anterior"
+    lv_obj_t *previous = lv_btn_create(objects.main);
+    lv_obj_set_pos(previous, 0, 51);
+    lv_obj_set_size(previous, 64, 438);
+    lv_obj_add_event_cb(previous, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)-1);
+    lv_obj_set_style_bg_color(previous, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(previous, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(previous, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(previous, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(previous, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_border_width(previous, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_width(previous, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_t *previous_label = lv_label_create(previous);
+    lv_label_set_text(previous_label, "<");
+    lv_obj_set_style_text_font(previous_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(previous_label);
+
+    // Botó "Següent"
+    lv_obj_t *next = lv_btn_create(objects.main);
+    lv_obj_set_pos(next, 896, 51);
+    lv_obj_set_size(next, 64, 438);
+    lv_obj_add_event_cb(next, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)1);
+    lv_obj_set_style_bg_color(next, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(next, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(next, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(next, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(next, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_border_width(next, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_width(next, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_t *next_label = lv_label_create(next);
+    lv_label_set_text(next_label, ">");
+    lv_obj_set_style_text_font(next_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_center(next_label);
+}
+
+static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
+    (void)driver;
+
+    int16_t touch_x[1], touch_y[1];
+    uint8_t touched = touch_available ? touch.getPoint(touch_x, touch_y, 1) : 0;
+    if (touched > 0) {
+        // GT911 is portrait-oriented (540x960), while LVGL is landscape (960x540).
+        data->point.x = touch_y[0];
+        data->point.y = (display_height - 1) - touch_x[0];
+        data->state = LV_INDEV_STATE_PR;
+        touch_active = true;
+        Serial.printf("[Touch] Touch (%d, %d) -> LVGL (%d, %d)\n",
+                      touch_x[0], touch_y[0], data->point.x, data->point.y);
+    } else {
+        data->state = LV_INDEV_STATE_REL;
+        touch_active = false;
+    }
+}
 
 static uint8_t color_to_gray(lv_color_t color) {
     uint8_t red = (uint8_t)((LV_COLOR_GET_R(color) * 255U) / 31U);
@@ -56,7 +132,7 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
 }
 
 static void refresh_pending_frame() {
-    if (!frame_pending) return;
+    if (!frame_pending || touch_active) return;
 
     EpdRect full_area = { .x = 0, .y = 0, .width = display_width, .height = display_height };
     frame_pending = false;
@@ -86,6 +162,12 @@ static void lvgl_display_init() {
     display.draw_buf = &draw_buffer;
     display.full_refresh = 0;
     lv_disp_drv_register(&display);
+
+    static lv_indev_drv_t touch_driver;
+    lv_indev_drv_init(&touch_driver);
+    touch_driver.type = LV_INDEV_TYPE_POINTER;
+    touch_driver.read_cb = lvgl_touch_read;
+    lv_indev_drv_register(&touch_driver);
 
     memset(gray_buffer, 0xFF, gray_buffer_size);
 }
@@ -132,32 +214,12 @@ void setup() {
     lvgl_display_init();
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
     ui_init();
+    create_page_buttons();
     lv_refr_now(lv_disp_get_default());
     refresh_pending_frame();
 }
 
 void loop() {
-    static uint32_t last_touch_trigger = 0;
-
-    // Comprovar toc a la pantalla
-    if (touch_available && millis() - last_touch_trigger > 200) {
-        int16_t tx[5], ty[5];
-        uint8_t touched = touch.getPoint(tx, ty, 1);
-        if (touched > 0) {
-            last_touch_trigger = millis();
-            Serial.printf("[Touch] Toc detectat (%d, %d)\n", tx[0], ty[0]);
-            // Passar toc a LVGL
-            lv_indev_t *indev = lv_indev_get_next(NULL);
-            if (indev) {
-                lv_indev_data_t data;
-                data.point.x = tx[0];
-                data.point.y = ty[0];
-                data.state = LV_INDEV_STATE_PR;
-                indev->proc(indev, &data);
-            }
-        }
-    }
-
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();

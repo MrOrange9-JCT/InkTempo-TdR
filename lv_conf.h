@@ -40,6 +40,7 @@
 
 #define LV_DISP_DEF_REFR_PERIOD 30      /* ePaper is slow, no need to refresh fast */
 #define LV_INDEV_DEF_READ_PERIOD 30
+#define LV_DEF_ANIM_TIME 0              /* Do not animate tile snapping on e-paper */
 
 #define LV_TICK_CUSTOM 1
 #if LV_TICK_CUSTOM
