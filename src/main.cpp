@@ -25,6 +25,21 @@ static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 static uint8_t current_page = 1;
+static lv_obj_t *previous_page_button;
+static lv_obj_t *next_page_button;
+
+static void update_page_buttons() {
+    if (current_page == 0) {
+        lv_obj_add_flag(previous_page_button, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(next_page_button, LV_OBJ_FLAG_HIDDEN);
+    } else if (current_page == 2) {
+        lv_obj_clear_flag(previous_page_button, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_add_flag(next_page_button, LV_OBJ_FLAG_HIDDEN);
+    } else {
+        lv_obj_clear_flag(previous_page_button, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(next_page_button, LV_OBJ_FLAG_HIDDEN);
+    }
+}
 
 static void page_button_event(lv_event_t *event) {
     int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
@@ -34,50 +49,56 @@ static void page_button_event(lv_event_t *event) {
     current_page = (uint8_t)next_page;
     lv_obj_t *tiles[] = { objects.obj0, objects.obj1, objects.obj2 };
     lv_obj_set_tile(objects.content, tiles[current_page], LV_ANIM_OFF);
+    update_page_buttons();
 }
 
 static void create_page_buttons() {
     // Crear botons de navegació a la pantalla principal
 
     // Botó "Anterior"
-    lv_obj_t *previous = lv_btn_create(objects.main);
-    lv_obj_set_pos(previous, 0, 51);
-    lv_obj_set_size(previous, 64, 438);
-    lv_obj_add_event_cb(previous, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)-1);
-    lv_obj_set_style_bg_color(previous, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(previous, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(previous, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(previous, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(previous, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(previous, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_border_width(previous, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_shadow_width(previous, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_t *previous_label = lv_label_create(previous);
+    previous_page_button = lv_btn_create(objects.main);
+    lv_obj_set_pos(previous_page_button, 0, 51);
+    lv_obj_set_size(previous_page_button, 64, 438);
+    lv_obj_add_event_cb(previous_page_button, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)-1);
+    lv_obj_set_style_bg_color(previous_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(previous_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(previous_page_button, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(previous_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(previous_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_border_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_width(previous_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_t *previous_label = lv_label_create(previous_page_button);
     lv_label_set_text(previous_label, "<");
     lv_obj_set_style_text_font(previous_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(previous_label, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_opa(previous_label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_center(previous_label);
 
     // Botó "Següent"
-    lv_obj_t *next = lv_btn_create(objects.main);
-    lv_obj_set_pos(next, 896, 51);
-    lv_obj_set_size(next, 64, 438);
-    lv_obj_add_event_cb(next, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)1);
-    lv_obj_set_style_bg_color(next, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(next, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(next, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_border_width(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_radius(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_shadow_width(next, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_color(next, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_bg_opa(next, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_border_width(next, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_set_style_shadow_width(next, 0, LV_PART_MAIN | LV_STATE_PRESSED);
-    lv_obj_t *next_label = lv_label_create(next);
+    next_page_button = lv_btn_create(objects.main);
+    lv_obj_set_pos(next_page_button, 896, 51);
+    lv_obj_set_size(next_page_button, 64, 438);
+    lv_obj_add_event_cb(next_page_button, page_button_event, LV_EVENT_CLICKED, (void *)(intptr_t)1);
+    lv_obj_set_style_bg_color(next_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(next_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(next_page_button, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_border_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_radius(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_shadow_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_color(next_page_button, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_bg_opa(next_page_button, LV_OPA_TRANSP, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_border_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_set_style_shadow_width(next_page_button, 0, LV_PART_MAIN | LV_STATE_PRESSED);
+    lv_obj_t *next_label = lv_label_create(next_page_button);
     lv_label_set_text(next_label, ">");
     lv_obj_set_style_text_font(next_label, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_color(next_label, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_opa(next_label, LV_OPA_COVER, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_center(next_label);
+    update_page_buttons();
 }
 
 static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
