@@ -1,4 +1,7 @@
 #include <Arduino.h>
+#include <Wire.h>
+#include <TouchDrvGT911.hpp>
+
 #include <esp_heap_caps.h>
 #include <epdiy.h>
 #include <lvgl.h>
@@ -6,8 +9,14 @@
 #include "lilygo_t5s3_board.h"
 #include "ui/ui.h"
 
+// Controlador tàctil
+static TouchDrvGT911 touch;
+static bool touch_available = false;
+
+// Framebuffer d'alta nivell i estat de la pantalla
 static EpdiyHighlevelState highlevel;
 static uint8_t *epd_framebuffer;
+
 static uint8_t *gray_buffer;
 static volatile bool frame_pending;
 static const uint16_t display_width = 960;
@@ -85,14 +94,42 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
 
+    Serial.println("\n==========================================");
+    Serial.println("      TREC - Jordi Castro - 2026-27");
+    Serial.println("==========================================");
+
+    // 1. Inicialitzar botó1 i pantalla tàctil
+    pinMode(LILYGO_T5S3_BUTTON_1, INPUT_PULLUP);
+
+    Wire.begin(LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL);
+    touch.setPins(-1, LILYGO_T5S3_TOUCH_INT);
+    if (touch.begin(Wire, 0x14, LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL) ||
+        touch.begin(Wire, 0x5D, LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL)) {
+        touch_available = true;
+        Serial.println("[Touch] Pantalla tàctil GT911 inciciada correctament.");
+    } else {
+        Serial.println("[Touch] Pantalla tàctil GT911 no detectada (Botó 21 i Serial actius).");
+    }
+
+    // 2. Inicialitzar EPDiy per a LilyGo T5-S3 amb pantalla ED047TC1
+    Serial.println("[EPDiy] Iniciant EPDiy per a LilyGo T5-S3 amb pantalla ED047TC1...");
     epd_init(&lilygo_t5s3_board, &ED047TC1, EPD_LUT_64K);
     highlevel = epd_hl_init(EPD_BUILTIN_WAVEFORM);
     epd_set_rotation(EPD_ROT_LANDSCAPE);
 
+    // 3. Inicialitzar Dual Framebuffer + Diff State
+    Serial.println("[EPDiy] Assignant buffers de framebuffer a PSRAM...");
+    highlevel = epd_hl_init(EPD_BUILTIN_WAVEFORM);
+    highlevel.mirror_x = false;
+    epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
+
+    // 4. Netejar pantalla
+    Serial.println("[EPDiy] Netejant pantalla inicial...");
     epd_poweron();
-    epd_clear();
+    epd_fullclear(&highlevel, 25);
     epd_poweroff();
 
+    // 5. Inicialitzar LVGL i interfície d'usuari
     lvgl_display_init();
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
     ui_init();
