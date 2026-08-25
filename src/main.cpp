@@ -119,7 +119,6 @@ void setup() {
 
     // 3. Inicialitzar Dual Framebuffer + Diff State
     Serial.println("[EPDiy] Assignant buffers de framebuffer a PSRAM...");
-    highlevel = epd_hl_init(EPD_BUILTIN_WAVEFORM);
     highlevel.mirror_x = false;
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
 
@@ -138,6 +137,27 @@ void setup() {
 }
 
 void loop() {
+    static uint32_t last_touch_trigger = 0;
+
+    // Comprovar toc a la pantalla
+    if (touch_available && millis() - last_touch_trigger > 200) {
+        int16_t tx[5], ty[5];
+        uint8_t touched = touch.getPoint(tx, ty, 1);
+        if (touched > 0) {
+            last_touch_trigger = millis();
+            Serial.printf("[Touch] Toc detectat (%d, %d)\n", tx[0], ty[0]);
+            // Passar toc a LVGL
+            lv_indev_t *indev = lv_indev_get_next(NULL);
+            if (indev) {
+                lv_indev_data_t data;
+                data.point.x = tx[0];
+                data.point.y = ty[0];
+                data.state = LV_INDEV_STATE_PR;
+                indev->proc(indev, &data);
+            }
+        }
+    }
+
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();

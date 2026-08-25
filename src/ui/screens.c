@@ -157,43 +157,43 @@ void create_screen_main() {
             {
                 lv_obj_t *parent_obj = obj;
                 {
-                    lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj0 = obj;
-                    lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 960, 438);
-                    lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    create_user_widget_stats_screen(obj, 12);
+                    // stats_screen (LEFT)
+                    lv_obj_t *stats_tile = lv_tileview_add_tile(parent_obj, 0, 0, LV_DIR_RIGHT);
+                    objects.obj0 = stats_tile;
+                    lv_obj_set_size(stats_tile, 960, 438);
+                    lv_obj_set_style_pad_left(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_top(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_right(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_bottom(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_width(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    create_user_widget_stats_screen(stats_tile, 12);
                 }
                 {
-                    lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj1 = obj;
-                    lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 960, 438);
-                    lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    create_user_widget_tasks_screen(obj, 26);
+                    // pomodoro_screen (CENTER)
+                    lv_obj_t *pomodoro_tile = lv_tileview_add_tile(parent_obj, 1, 0, LV_DIR_HOR);
+                    objects.obj2 = pomodoro_tile;
+                    lv_obj_set_size(pomodoro_tile, 960, 438);
+                    lv_obj_set_style_pad_left(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_top(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_right(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_bottom(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_width(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    create_user_widget_pomodoro_screen(pomodoro_tile, 42);
                 }
                 {
-                    lv_obj_t *obj = lv_obj_create(parent_obj);
-                    objects.obj2 = obj;
-                    lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 960, 438);
-                    lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_pad_bottom(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    lv_obj_set_style_border_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-                    create_user_widget_pomodoro_screen(obj, 42);
+                    // tasks_screen (RIGHT)
+                    lv_obj_t *tasks_tile = lv_tileview_add_tile(parent_obj, 2, 0, LV_DIR_LEFT);
+                    objects.obj1 = tasks_tile;
+                    lv_obj_set_size(tasks_tile, 960, 438);
+                    lv_obj_set_style_pad_left(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_top(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_right(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_pad_bottom(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_bg_opa(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_set_style_border_width(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    create_user_widget_tasks_screen(tasks_tile, 26);
                 }
             }
         }
