@@ -34,7 +34,7 @@ void create_screen_main() {
             // title
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.title = obj;
-            lv_obj_set_pos(obj, 0, 10);
+            lv_obj_set_pos(obj, 0, 14);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -46,7 +46,7 @@ void create_screen_main() {
             // top_line
             lv_obj_t *obj = lv_line_create(parent_obj);
             objects.top_line = obj;
-            lv_obj_set_pos(obj, 0, 50);
+            lv_obj_set_pos(obj, 0, 54);
             lv_obj_set_size(obj, 960, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
                 { 0, 0 },
@@ -61,7 +61,7 @@ void create_screen_main() {
             // bottom_line
             lv_obj_t *obj = lv_line_create(parent_obj);
             objects.bottom_line = obj;
-            lv_obj_set_pos(obj, 0, 490);
+            lv_obj_set_pos(obj, 0, 486);
             lv_obj_set_size(obj, 960, LV_SIZE_CONTENT);
             static lv_point_t line_points[] = {
                 { 0, 0 },
@@ -76,7 +76,7 @@ void create_screen_main() {
             // current_time
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.current_time = obj;
-            lv_obj_set_pos(obj, 50, 10);
+            lv_obj_set_pos(obj, 50, 14);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -87,7 +87,7 @@ void create_screen_main() {
             // battery
             lv_obj_t *obj = lv_label_create(parent_obj);
             objects.battery = obj;
-            lv_obj_set_pos(obj, -50, 10);
+            lv_obj_set_pos(obj, -50, 14);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -99,7 +99,7 @@ void create_screen_main() {
             // bottom_dots
             lv_obj_t *obj = lv_obj_create(parent_obj);
             objects.bottom_dots = obj;
-            lv_obj_set_pos(obj, 0, -16);
+            lv_obj_set_pos(obj, 0, -20);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -152,15 +152,15 @@ void create_screen_main() {
             // content
             lv_obj_t *obj = lv_tileview_create(parent_obj);
             objects.content = obj;
-            lv_obj_set_pos(obj, 0, 51);
-            lv_obj_set_size(obj, 960, 438);
+            lv_obj_set_pos(obj, 0, 55);
+            lv_obj_set_size(obj, 960, 430);
             {
                 lv_obj_t *parent_obj = obj;
                 {
                     // stats_screen (LEFT)
                     lv_obj_t *stats_tile = lv_tileview_add_tile(parent_obj, 0, 0, LV_DIR_RIGHT);
                     objects.obj0 = stats_tile;
-                    lv_obj_set_size(stats_tile, 960, 438);
+                    lv_obj_set_size(stats_tile, 960, 430);
                     lv_obj_set_style_pad_left(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(stats_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -173,7 +173,7 @@ void create_screen_main() {
                     // pomodoro_screen (CENTER)
                     lv_obj_t *pomodoro_tile = lv_tileview_add_tile(parent_obj, 1, 0, LV_DIR_HOR);
                     objects.obj1 = pomodoro_tile;
-                    lv_obj_set_size(pomodoro_tile, 960, 438);
+                    lv_obj_set_size(pomodoro_tile, 960, 430);
                     lv_obj_set_style_pad_left(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -186,7 +186,7 @@ void create_screen_main() {
                     // tasks_screen (RIGHT)
                     lv_obj_t *tasks_tile = lv_tileview_add_tile(parent_obj, 2, 0, LV_DIR_LEFT);
                     objects.obj2 = tasks_tile;
-                    lv_obj_set_size(tasks_tile, 960, 438);
+                    lv_obj_set_size(tasks_tile, 960, 430);
                     lv_obj_set_style_pad_left(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -316,14 +316,14 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
         lv_obj_t *parent_obj = obj;
         {
             lv_obj_t *obj = lv_img_create(parent_obj);
-            lv_obj_set_pos(obj, 50, 20);
+            lv_obj_set_pos(obj, 82, 20);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
             lv_img_set_src(obj, &img_notion_icon);
         }
         {
             lv_obj_t *obj = lv_list_create(parent_obj);
-            lv_obj_set_pos(obj, 50, 70);
-            lv_obj_set_size(obj, 860, LV_SIZE_CONTENT);
+            lv_obj_set_pos(obj, 80, 70);
+            lv_obj_set_size(obj, 800, LV_SIZE_CONTENT);
             lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -365,7 +365,7 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_font(obj, &lv_font_montserrat_16, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_outline_color(obj, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_CHECKED);
-                            lv_obj_set_style_border_color(obj, lv_color_hex(0xbfbfbf), LV_PART_INDICATOR | LV_STATE_CHECKED);
+                            lv_obj_set_style_border_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -402,7 +402,7 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_pad_left(obj, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_max_width(obj, 580, LV_PART_MAIN | LV_STATE_DEFAULT);
-                            lv_label_set_text_static(obj, "Estudiar per la pujada de nota");
+                            lv_label_set_text_static(obj, "Estudiar per la pujada");
                         }
                         {
                             lv_obj_t *obj = lv_label_create(parent_obj);
@@ -450,7 +450,7 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_font(obj, &lv_font_montserrat_16, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_outline_color(obj, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_CHECKED);
-                            lv_obj_set_style_border_color(obj, lv_color_hex(0xbfbfbf), LV_PART_INDICATOR | LV_STATE_CHECKED);
+                            lv_obj_set_style_border_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -535,7 +535,7 @@ void create_user_widget_tasks_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_font(obj, &lv_font_montserrat_16, LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_outline_color(obj, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_CHECKED);
-                            lv_obj_set_style_border_color(obj, lv_color_hex(0xbfbfbf), LV_PART_INDICATOR | LV_STATE_CHECKED);
+                            lv_obj_set_style_border_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
                             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -602,8 +602,8 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
         lv_obj_t *parent_obj = obj;
         {
             lv_obj_t *obj = lv_list_create(parent_obj);
-            lv_obj_set_pos(obj, 50, 30);
-            lv_obj_set_size(obj, 860, LV_SIZE_CONTENT);
+            lv_obj_set_pos(obj, 80, 30);
+            lv_obj_set_size(obj, 800, LV_SIZE_CONTENT);
             lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -616,7 +616,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                     lv_obj_t *obj = lv_obj_create(parent_obj);
                     ((lv_obj_t **)&objects)[startWidgetIndex + 0] = obj;
                     lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 860, LV_SIZE_CONTENT);
+                    lv_obj_set_size(obj, 800, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -665,7 +665,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_t *obj = lv_bar_create(parent_obj);
                             ((lv_obj_t **)&objects)[startWidgetIndex + 4] = obj;
                             lv_obj_set_pos(obj, 0, 40);
-                            lv_obj_set_size(obj, 760, 10);
+                            lv_obj_set_size(obj, 710, 10);
                             lv_bar_set_range(obj, 0, 90);
                             lv_bar_set_value(obj, 25, LV_ANIM_OFF);
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -677,7 +677,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
                     lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 860, LV_SIZE_CONTENT);
+                    lv_obj_set_size(obj, 800, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -725,7 +725,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_t *obj = lv_bar_create(parent_obj);
                             ((lv_obj_t **)&objects)[startWidgetIndex + 8] = obj;
                             lv_obj_set_pos(obj, 0, 40);
-                            lv_obj_set_size(obj, 760, 10);
+                            lv_obj_set_size(obj, 710, 10);
                             lv_bar_set_range(obj, 0, 5);
                             lv_bar_set_value(obj, 3, LV_ANIM_OFF);
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -737,7 +737,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                 {
                     lv_obj_t *obj = lv_obj_create(parent_obj);
                     lv_obj_set_pos(obj, 0, 0);
-                    lv_obj_set_size(obj, 860, LV_SIZE_CONTENT);
+                    lv_obj_set_size(obj, 800, LV_SIZE_CONTENT);
                     lv_obj_set_style_pad_left(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_top(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_pad_right(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -785,7 +785,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_t *obj = lv_bar_create(parent_obj);
                             ((lv_obj_t **)&objects)[startWidgetIndex + 12] = obj;
                             lv_obj_set_pos(obj, 0, 40);
-                            lv_obj_set_size(obj, 760, 10);
+                            lv_obj_set_size(obj, 710, 10);
                             lv_bar_set_range(obj, 0, 10);
                             lv_bar_set_value(obj, 1, LV_ANIM_OFF);
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -908,6 +908,4 @@ void create_screens() {
     // Initialize screens
     // Create screens
     create_screen_main();
-    
-    // Set the starting tile to pomodoro screen
 }

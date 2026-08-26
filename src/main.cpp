@@ -9,6 +9,7 @@
 #include "lilygo_t5s3_board.h"
 #include "ui/ui.h"
 #include "ui/fonts.h"
+#include "ui/vars.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -27,6 +28,21 @@ static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 static uint8_t current_page = 1;
 static lv_obj_t *previous_page_button;
 static lv_obj_t *next_page_button;
+
+static void update_page_indicators() {
+    static const char *page_titles[] = { "Estadístiques", "Pomodoro", "Tasques" };
+    lv_obj_t *dots[] = { objects.dot_0, objects.dot_1, objects.dot_2 };
+
+    set_var_screen_title(page_titles[current_page]);
+
+    for (uint8_t index = 0; index < 3; index++) {
+        lv_obj_set_style_bg_color(dots[index], lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(dots[index], index == current_page ? LV_OPA_COVER : LV_OPA_TRANSP,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+
+    tick_screen_main();
+}
 
 static void update_page_buttons() {
     if (current_page == 0) {
@@ -50,6 +66,7 @@ static void page_button_event(lv_event_t *event) {
     current_page = (uint8_t)next_page;
     lv_obj_t *tiles[] = { objects.obj0, objects.obj1, objects.obj2 };
     lv_obj_set_tile(objects.content, tiles[current_page], LV_ANIM_OFF);
+    update_page_indicators();
     update_page_buttons();
 }
 
@@ -228,6 +245,7 @@ void setup() {
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
     ui_init();
     create_page_buttons();
+    update_page_indicators();
     lv_refr_now(lv_disp_get_default());
     refresh_pending_frame();
 }
