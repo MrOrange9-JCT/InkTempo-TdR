@@ -1,5 +1,8 @@
 #include "actions.h"
 
+extern void pomodoro_toggle(void);
+
 void action_toggle_pomodoro(lv_event_t *e) {
-    // TODO: Implement action toggle_pomodoro here
+    (void)e;
+    pomodoro_toggle();
 }

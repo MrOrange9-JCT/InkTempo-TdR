@@ -15,7 +15,7 @@
 static TouchDrvGT911 touch;
 static bool touch_available = false;
 
-// Framebuffer d'alta nivell i estat de la pantalla
+// Framebuffer d'alt nivell i característiques de la pantalla
 static EpdiyHighlevelState highlevel;
 static uint8_t *epd_framebuffer;
 
@@ -25,11 +25,143 @@ static volatile bool touch_active;
 static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
+
+// Estat de les pàgines
 static uint8_t current_page = 1;
 static lv_obj_t *previous_page_button;
 static lv_obj_t *next_page_button;
 
+// Temporitzador Pomodoro
+uint32_t FOCUS_DURATION_MS = 5 * 60 * 1000; //FIXME: 5 min (PLACEHOLDER) 
+uint32_t SHORT_BREAK_DURATION_MS = 5 * 60 * 1000; // 5 min
+uint32_t LONG_BREAK_DURATION_MS = 10 * 60 * 1000; // 10 min
+uint8_t  CYCLES_BEFORE_LONG_BREAK = 2;
+
+enum pomodoro_stage {
+    POMODORO_READY,
+    POMODORO_FOCUS,
+    POMODORO_SHORT_BREAK,
+    POMODORO_LONG_BREAK,
+    POMODORO_PAUSED
+};
+
+static enum pomodoro_stage pomodoro_current_stage = POMODORO_READY;
+static enum pomodoro_stage pomodoro_paused_from_stage = POMODORO_READY;
+static unsigned long pomodoro_start_time = 0;
+static unsigned long pomodoro_elapsed_time = 0;
+static uint8_t pomodoro_cycles_completed = 0;
+static String pomodoro_label = "Preparat";
+String last_remaining_time_str = "25′"; // Valor inicial per a la comparació
+
+static unsigned long get_pomodoro_stage_duration(enum pomodoro_stage stage) {
+    switch (stage) {
+        case POMODORO_FOCUS:
+            return FOCUS_DURATION_MS;
+        case POMODORO_SHORT_BREAK:
+            return SHORT_BREAK_DURATION_MS;
+        case POMODORO_LONG_BREAK:
+            return LONG_BREAK_DURATION_MS;
+        default:
+            return 0;
+    }
+}
+
+static void pomodoro_start_stage(enum pomodoro_stage stage) {
+    pomodoro_current_stage = stage;
+    pomodoro_start_time = millis();
+    pomodoro_elapsed_time = 0;
+
+    switch (stage) {
+        case POMODORO_FOCUS:
+            pomodoro_label = "Concentració #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
+            set_var_pomodoro_stage_label(pomodoro_label.c_str());
+            break;
+        case POMODORO_SHORT_BREAK:
+            pomodoro_label = "Descans Curt #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
+            set_var_pomodoro_stage_label(pomodoro_label.c_str());
+            break;
+        case POMODORO_LONG_BREAK:
+            pomodoro_label = "Descans Llarg #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
+            set_var_pomodoro_stage_label(pomodoro_label.c_str());
+            break;
+        default:
+            set_var_pomodoro_stage_label("Preparat");
+            break;
+    }
+}
+
+extern "C" void pomodoro_toggle() {
+    // Alternar entre pausar i reprendre el temporitzador Pomodoro, connectat amb el botó de la interfície d'usuari
+    switch (pomodoro_current_stage) {
+        case POMODORO_READY:
+            pomodoro_cycles_completed = 0;
+            pomodoro_start_stage(POMODORO_FOCUS);
+            break;
+
+        case POMODORO_FOCUS:
+        case POMODORO_SHORT_BREAK:
+        case POMODORO_LONG_BREAK:
+            pomodoro_current_stage = POMODORO_PAUSED;
+            pomodoro_elapsed_time += millis() - pomodoro_start_time;
+            set_var_pomodoro_stage_label("Pausat");
+            break;
+        case POMODORO_PAUSED:
+            pomodoro_current_stage = pomodoro_paused_from_stage ;
+            pomodoro_start_time = millis();
+            set_var_pomodoro_stage_label(pomodoro_label.c_str());
+            break;
+    }
+}
+
+void update_pomodoro() {
+    if (pomodoro_current_stage == POMODORO_PAUSED || pomodoro_current_stage == POMODORO_READY) return;
+    
+    uint32_t stage_duration = get_pomodoro_stage_duration(pomodoro_current_stage);
+    unsigned long    elapsed_time = pomodoro_elapsed_time + (millis() - pomodoro_start_time);
+
+    if (elapsed_time >= stage_duration) {
+        if (pomodoro_current_stage == POMODORO_FOCUS) {
+            pomodoro_cycles_completed++;
+            if (pomodoro_cycles_completed % CYCLES_BEFORE_LONG_BREAK == 0) { // Si el residu és 0 --> descans llarg
+                pomodoro_start_stage(POMODORO_LONG_BREAK);
+            } else {
+                pomodoro_start_stage(POMODORO_SHORT_BREAK);
+            }
+        } else {
+            pomodoro_start_stage(POMODORO_FOCUS);
+        }
+    }
+}
+
+unsigned long update_pomodoro_remaining_time() {
+    if (pomodoro_current_stage == POMODORO_READY) return 0;
+
+    // Si està pausat, utilitzar l'etapa des de la qual es va pausar per calcular el temps restant
+    pomodoro_stage effective_stage = (pomodoro_current_stage == POMODORO_PAUSED) ? pomodoro_paused_from_stage : pomodoro_current_stage;
+    unsigned long duration = get_pomodoro_stage_duration(effective_stage);
+
+    unsigned long elapsed = pomodoro_elapsed_time;
+    if (pomodoro_current_stage != POMODORO_PAUSED) elapsed += millis() - pomodoro_start_time;
+
+    if (elapsed >= duration) return 0;
+
+    unsigned long remaining_seconds = duration / 1000 - elapsed / 1000;
+    uint8_t remaining_minutes = (remaining_seconds + 59) / 60; // arrodonir al minut
+
+    String remaining_time_str = String(remaining_minutes) + "′";
+
+    Serial.printf("stage=%d remaining=%lu changed=%d\n", pomodoro_current_stage, remaining_minutes, remaining_time_str != last_remaining_time_str);
+    
+    if (remaining_time_str != last_remaining_time_str) { // Només actualitzar si ha canviat
+        last_remaining_time_str = remaining_time_str;
+        set_var_pomodoro_timer(remaining_time_str.c_str());
+    }
+
+    return remaining_minutes;
+}
+
 static void update_page_indicators() {
+    // Actualitzar els punts de la part inferior segons la pàgina actual
     static const char *page_titles[] = { "Estadístiques", "Pomodoro", "Tasques" };
     lv_obj_t *dots[] = { objects.dot_0, objects.dot_1, objects.dot_2 };
 
@@ -45,6 +177,7 @@ static void update_page_indicators() {
 }
 
 static void update_page_buttons() {
+    // Actualitzar la visibilitat dels botons de navegació segons la pàgina actual
     if (current_page == 0) {
         lv_obj_add_flag(previous_page_button, LV_OBJ_FLAG_HIDDEN);
         lv_obj_clear_flag(next_page_button, LV_OBJ_FLAG_HIDDEN);
@@ -251,6 +384,8 @@ void setup() {
 }
 
 void loop() {
+    update_pomodoro();
+    update_pomodoro_remaining_time();
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();

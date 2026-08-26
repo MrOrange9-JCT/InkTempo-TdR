@@ -25,8 +25,8 @@ extern const char *get_var_screen_title();
 extern void set_var_screen_title(const char *value);
 extern const char *get_var_current_time();
 extern void set_var_current_time(const char *value);
-extern const char *get_var_pomodoro_stage();
-extern void set_var_pomodoro_stage(const char *value);
+extern const char *get_var_pomodoro_stage_label();
+extern void set_var_pomodoro_stage_label(const char *value);
 extern const char *get_var_pomodoro_timer();
 extern void set_var_pomodoro_timer(const char *value);
 

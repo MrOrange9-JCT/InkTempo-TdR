@@ -3,8 +3,8 @@
 static const char *battery_level = "100%";
 static const char *screen_title = "EPDiy T5-S3";
 static const char *current_time = "12:00";
-static const char *pomodoro_stage = "Ready";
-static const char *pomodoro_timer = "25:00";
+static const char *pomodoro_stage_label = "Preparat";
+static const char *pomodoro_timer = "25′";
 
 const char *get_var_battery_level() {
     return battery_level;
@@ -31,11 +31,11 @@ void set_var_current_time(const char *value) {
 }
 
 const char *get_var_pomodoro_stage() {
-    return pomodoro_stage;
+    return pomodoro_stage_label;
 }
 
-void set_var_pomodoro_stage(const char *value) {
-    pomodoro_stage = value;
+void set_var_pomodoro_stage_label(const char *value) {
+    pomodoro_stage_label = value;
 }
 
 const char *get_var_pomodoro_timer() {
