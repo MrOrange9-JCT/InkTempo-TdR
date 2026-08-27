@@ -181,6 +181,7 @@ void create_screen_main() {
                     lv_obj_set_style_bg_opa(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_border_width(pomodoro_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     create_user_widget_pomodoro_screen(pomodoro_tile, 42);
+
                 }
                 {
                     // tasks_screen (RIGHT)
@@ -194,6 +195,7 @@ void create_screen_main() {
                     lv_obj_set_style_bg_opa(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_border_width(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     create_user_widget_tasks_screen(tasks_tile, 26);
+
                 }
                 // Hide scrollbar
                 lv_obj_set_scrollbar_mode(parent_obj, LV_SCROLLBAR_MODE_OFF);

@@ -6,7 +6,7 @@
 static char battery_level[VAR_BUF_SIZE] = "100%";
 static char screen_title[VAR_BUF_SIZE] = "EPDiy T5-S3";
 static char current_time[VAR_BUF_SIZE] = "12:00";
-static char pomodoro_stage_label[VAR_BUF_SIZE] = "Preparat";
+static char pomodoro_stage_label[VAR_BUF_SIZE] = "Llest";
 static char pomodoro_timer[VAR_BUF_SIZE] = "25′";
 
 static void set_var(char *dest, size_t dest_size, const char *value) {

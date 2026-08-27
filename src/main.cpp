@@ -26,6 +26,11 @@ static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 
+static void refresh_pending_frame();
+static void refresh_rect(EpdRect rect, EpdDrawMode mode);
+static void apply_pomodoro_theme(bool active);
+static bool pomodoro_theme_active = false;
+
 // Estat de les pàgines
 static uint8_t current_page = 1;
 static lv_obj_t *previous_page_button;
@@ -50,8 +55,10 @@ static enum pomodoro_stage pomodoro_paused_from_stage = POMODORO_READY;
 static unsigned long pomodoro_start_time = 0;
 static unsigned long pomodoro_elapsed_time = 0;
 static uint8_t pomodoro_cycles_completed = 0;
-static String pomodoro_label = "Preparat";
+static String pomodoro_label = "Llest";
 String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb el valor real de la variable EEZ
+
+static const EpdRect pomodoro_rect = { .x = 305, .y = 88, .width = 350, .height = 270 };
 
 static unsigned long get_pomodoro_stage_duration(enum pomodoro_stage stage) {
     switch (stage) {
@@ -71,6 +78,8 @@ static void pomodoro_start_stage(enum pomodoro_stage stage) {
     pomodoro_start_time = millis();
     pomodoro_elapsed_time = 0;
 
+    apply_pomodoro_theme(true);
+
     switch (stage) {
         case POMODORO_FOCUS:
             pomodoro_label = "Concentració #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
@@ -85,13 +94,14 @@ static void pomodoro_start_stage(enum pomodoro_stage stage) {
             set_var_pomodoro_stage_label(pomodoro_label.c_str());
             break;
         default:
-            set_var_pomodoro_stage_label("Preparat");
+            set_var_pomodoro_stage_label("Llest");
             break;
     }
 }
 
 extern "C" void pomodoro_toggle() {
     // Alternar entre pausar i reprendre el temporitzador Pomodoro, connectat amb el botó de la interfície d'usuari
+    
     switch (pomodoro_current_stage) {
         case POMODORO_READY:
             pomodoro_cycles_completed = 0;
@@ -101,13 +111,17 @@ extern "C" void pomodoro_toggle() {
         case POMODORO_FOCUS:
         case POMODORO_SHORT_BREAK:
         case POMODORO_LONG_BREAK:
+            pomodoro_paused_from_stage = pomodoro_current_stage;
             pomodoro_current_stage = POMODORO_PAUSED;
             pomodoro_elapsed_time += millis() - pomodoro_start_time;
+            apply_pomodoro_theme(false);
             set_var_pomodoro_stage_label("Pausat");
             break;
+
         case POMODORO_PAUSED:
             pomodoro_current_stage = pomodoro_paused_from_stage ;
             pomodoro_start_time = millis();
+            apply_pomodoro_theme(true);
             set_var_pomodoro_stage_label(pomodoro_label.c_str());
             break;
     }
@@ -117,7 +131,7 @@ void update_pomodoro() {
     if (pomodoro_current_stage == POMODORO_PAUSED || pomodoro_current_stage == POMODORO_READY) return;
     
     uint32_t stage_duration = get_pomodoro_stage_duration(pomodoro_current_stage);
-    unsigned long    elapsed_time = pomodoro_elapsed_time + (millis() - pomodoro_start_time);
+    unsigned long elapsed_time = pomodoro_elapsed_time + (millis() - pomodoro_start_time);
 
     if (elapsed_time >= stage_duration) {
         if (pomodoro_current_stage == POMODORO_FOCUS) {
@@ -169,7 +183,9 @@ static void update_page_indicators() {
     set_var_screen_title(page_titles[current_page]);
 
     for (uint8_t index = 0; index < 3; index++) {
-        lv_obj_set_style_bg_color(dots[index], lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_color_t indicator_color = pomodoro_theme_active ? lv_color_hex(0xffffff) : lv_color_hex(0x000000);
+        lv_obj_set_style_bg_color(dots[index], indicator_color, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_color(dots[index], indicator_color, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_opa(dots[index], index == current_page ? LV_OPA_COVER : LV_OPA_TRANSP,
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     }
@@ -192,7 +208,15 @@ static void update_page_buttons() {
 }
 
 static void page_button_event(lv_event_t *event) {
-    // Registrar l'event de clic del botó < o > i canviar la pàgina
+    if (pomodoro_current_stage != POMODORO_READY && pomodoro_current_stage != POMODORO_PAUSED) {
+        pomodoro_paused_from_stage = pomodoro_current_stage;
+        pomodoro_current_stage = POMODORO_PAUSED;
+        pomodoro_elapsed_time += millis() - pomodoro_start_time;
+        apply_pomodoro_theme(false);
+        set_var_pomodoro_stage_label("Pausat");
+    }
+
+    // Registrar l'esddeveniment de clic del botó < o > i canviar la pàgina
     int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
     int8_t next_page = (int8_t)current_page + direction;
     if (next_page < 0 || next_page > 2) return;
@@ -200,6 +224,26 @@ static void page_button_event(lv_event_t *event) {
     current_page = (uint8_t)next_page;
     lv_obj_t *tiles[] = { objects.obj0, objects.obj1, objects.obj2 };
     lv_obj_set_tile(objects.content, tiles[current_page], LV_ANIM_OFF);
+    update_page_indicators();
+    update_page_buttons();
+}
+
+static void tileview_event(lv_event_t *event) {
+    if (lv_event_get_code(event) != LV_EVENT_VALUE_CHANGED) return;
+
+    if (pomodoro_current_stage != POMODORO_READY && pomodoro_current_stage != POMODORO_PAUSED) {
+        pomodoro_paused_from_stage = pomodoro_current_stage;
+        pomodoro_current_stage = POMODORO_PAUSED;
+        pomodoro_elapsed_time += millis() - pomodoro_start_time;
+        apply_pomodoro_theme(false);
+        set_var_pomodoro_stage_label("Pausat");
+    }
+
+    lv_obj_t *active_tile = lv_tileview_get_tile_act(objects.content);
+    if (active_tile == objects.obj0) current_page = 0;
+    else if (active_tile == objects.obj1) current_page = 1;
+    else if (active_tile == objects.obj2) current_page = 2;
+
     update_page_indicators();
     update_page_buttons();
 }
@@ -242,6 +286,43 @@ static void create_page_buttons() {
     }
 
     update_page_buttons();
+    lv_obj_add_event_cb(objects.content, tileview_event, LV_EVENT_VALUE_CHANGED, NULL);
+}
+
+static lv_color_t pomodoro_theme_color(lv_color_t color, bool active) {
+    bool is_black = LV_COLOR_GET_R(color) == 0 && LV_COLOR_GET_G(color) == 0 && LV_COLOR_GET_B(color) == 0;
+    bool is_white = LV_COLOR_GET_R(color) == 31 && LV_COLOR_GET_G(color) == 63 && LV_COLOR_GET_B(color) == 31;
+
+    if (active && is_white) return lv_color_hex(0x000000);
+    if (active && is_black) return lv_color_hex(0xffffff);
+    if (!active && is_black) return lv_color_hex(0xffffff);
+    if (!active && is_white) return lv_color_hex(0x000000);
+    return color;
+}
+
+static void apply_pomodoro_theme_to_object(lv_obj_t *object, bool active) {
+    lv_style_selector_t selector = LV_PART_MAIN | LV_STATE_DEFAULT;
+    lv_obj_set_style_bg_color(object, pomodoro_theme_color(lv_obj_get_style_bg_color(object, selector), active), selector);
+    lv_obj_set_style_text_color(object, pomodoro_theme_color(lv_obj_get_style_text_color(object, selector), active), selector);
+    lv_obj_set_style_border_color(object, pomodoro_theme_color(lv_obj_get_style_border_color(object, selector), active), selector);
+    lv_obj_set_style_line_color(object, pomodoro_theme_color(lv_obj_get_style_line_color(object, selector), active), selector);
+    lv_obj_set_style_outline_color(object, pomodoro_theme_color(lv_obj_get_style_outline_color(object, selector), active), selector);
+    lv_obj_set_style_shadow_color(object, pomodoro_theme_color(lv_obj_get_style_shadow_color(object, selector), active), selector);
+
+    for (uint32_t child_index = 0; child_index < lv_obj_get_child_cnt(object); child_index++) {
+        apply_pomodoro_theme_to_object(lv_obj_get_child(object, child_index), active);
+    }
+}
+
+static void apply_pomodoro_theme(bool active) {
+    if (pomodoro_theme_active == active || objects.main == nullptr) return;
+
+    apply_pomodoro_theme_to_object(objects.main, active);
+    for (lv_obj_t *surface : {objects.content, objects.obj0, objects.obj1, objects.obj2}) {
+        lv_obj_set_style_bg_opa(surface, active ? LV_OPA_COVER : LV_OPA_TRANSP,
+                                LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+    pomodoro_theme_active = active;
 }
 
 static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
@@ -293,6 +374,13 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
 
     frame_pending = true;
     lv_disp_flush_ready(display);
+}
+
+static void refresh_rect(EpdRect rect, EpdDrawMode mode) {
+    // Funció "helper" per actualitzar una àrea específica de la pantalla EPDiy
+    epd_poweron();
+    epd_hl_update_area(&highlevel, mode, epd_ambient_temperature(), rect);
+    epd_poweroff();
 }
 
 static void refresh_pending_frame() {
