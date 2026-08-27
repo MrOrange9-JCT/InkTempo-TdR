@@ -51,7 +51,7 @@ static unsigned long pomodoro_start_time = 0;
 static unsigned long pomodoro_elapsed_time = 0;
 static uint8_t pomodoro_cycles_completed = 0;
 static String pomodoro_label = "Preparat";
-String last_remaining_time_str = "25′"; // Valor inicial per a la comparació
+String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb el valor real de la variable EEZ
 
 static unsigned long get_pomodoro_stage_duration(enum pomodoro_stage stage) {
     switch (stage) {
@@ -145,13 +145,14 @@ unsigned long update_pomodoro_remaining_time() {
 
     if (elapsed >= duration) return 0;
 
-    unsigned long remaining_seconds = duration / 1000 - elapsed / 1000;
-    uint8_t remaining_minutes = (remaining_seconds + 59) / 60; // arrodonir al minut
+    unsigned long remaining_seconds = (duration - elapsed) / 1000;
+    uint8_t remaining_minutes = (remaining_seconds + 59) / 60; // arrodonir (truncar) al minut
 
     String remaining_time_str = String(remaining_minutes) + "′";
 
     Serial.printf("stage=%d remaining=%lu changed=%d\n", pomodoro_current_stage, remaining_minutes, remaining_time_str != last_remaining_time_str);
-    
+    Serial.println(remaining_time_str);
+
     if (remaining_time_str != last_remaining_time_str) { // Només actualitzar si ha canviat
         last_remaining_time_str = remaining_time_str;
         set_var_pomodoro_timer(remaining_time_str.c_str());
@@ -162,7 +163,7 @@ unsigned long update_pomodoro_remaining_time() {
 
 static void update_page_indicators() {
     // Actualitzar els punts de la part inferior segons la pàgina actual
-    static const char *page_titles[] = { "Estadístiques", "Pomodoro", "Tasques" };
+    static const char *page_titles[] = { "ESTADÍSTIQUES", "POMODORO", "TASQUES" };
     lv_obj_t *dots[] = { objects.dot_0, objects.dot_1, objects.dot_2 };
 
     set_var_screen_title(page_titles[current_page]);
