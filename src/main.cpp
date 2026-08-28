@@ -10,6 +10,7 @@
 #include "ui/ui.h"
 #include "ui/fonts.h"
 #include "ui/vars.h"
+#include "modules/pomodoro.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -29,6 +30,7 @@ static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 static void refresh_pending_frame();
 static void refresh_rect(EpdRect rect, EpdDrawMode mode);
 static void apply_pomodoro_theme(bool active);
+static void sync_pomodoro_ui();
 static bool pomodoro_theme_active = false;
 
 // Estat de les pàgines
@@ -36,144 +38,7 @@ static uint8_t current_page = 1;
 static lv_obj_t *previous_page_button;
 static lv_obj_t *next_page_button;
 
-// Temporitzador Pomodoro
-uint32_t FOCUS_DURATION_MS = 5 * 60 * 1000; //FIXME: 5 min (PLACEHOLDER) 
-uint32_t SHORT_BREAK_DURATION_MS = 5 * 60 * 1000; // 5 min
-uint32_t LONG_BREAK_DURATION_MS = 10 * 60 * 1000; // 10 min
-uint8_t  CYCLES_BEFORE_LONG_BREAK = 2;
-
-enum pomodoro_stage {
-    POMODORO_READY,
-    POMODORO_FOCUS,
-    POMODORO_SHORT_BREAK,
-    POMODORO_LONG_BREAK,
-    POMODORO_PAUSED
-};
-
-static enum pomodoro_stage pomodoro_current_stage = POMODORO_READY;
-static enum pomodoro_stage pomodoro_paused_from_stage = POMODORO_READY;
-static unsigned long pomodoro_start_time = 0;
-static unsigned long pomodoro_elapsed_time = 0;
-static uint8_t pomodoro_cycles_completed = 0;
-static String pomodoro_label = "Llest";
 String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb el valor real de la variable EEZ
-
-static const EpdRect pomodoro_rect = { .x = 305, .y = 88, .width = 350, .height = 270 };
-
-static unsigned long get_pomodoro_stage_duration(enum pomodoro_stage stage) {
-    switch (stage) {
-        case POMODORO_FOCUS:
-            return FOCUS_DURATION_MS;
-        case POMODORO_SHORT_BREAK:
-            return SHORT_BREAK_DURATION_MS;
-        case POMODORO_LONG_BREAK:
-            return LONG_BREAK_DURATION_MS;
-        default:
-            return 0;
-    }
-}
-
-static void pomodoro_start_stage(enum pomodoro_stage stage) {
-    pomodoro_current_stage = stage;
-    pomodoro_start_time = millis();
-    pomodoro_elapsed_time = 0;
-
-    apply_pomodoro_theme(true);
-
-    switch (stage) {
-        case POMODORO_FOCUS:
-            pomodoro_label = "Concentració #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            set_var_pomodoro_stage_label(pomodoro_label.c_str());
-            break;
-        case POMODORO_SHORT_BREAK:
-            pomodoro_label = "Descans Curt #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            set_var_pomodoro_stage_label(pomodoro_label.c_str());
-            break;
-        case POMODORO_LONG_BREAK:
-            pomodoro_label = "Descans Llarg #" + String(pomodoro_cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            set_var_pomodoro_stage_label(pomodoro_label.c_str());
-            break;
-        default:
-            set_var_pomodoro_stage_label("Llest");
-            break;
-    }
-}
-
-extern "C" void pomodoro_toggle() {
-    // Alternar entre pausar i reprendre el temporitzador Pomodoro, connectat amb el botó de la interfície d'usuari
-    
-    switch (pomodoro_current_stage) {
-        case POMODORO_READY:
-            pomodoro_cycles_completed = 0;
-            pomodoro_start_stage(POMODORO_FOCUS);
-            break;
-
-        case POMODORO_FOCUS:
-        case POMODORO_SHORT_BREAK:
-        case POMODORO_LONG_BREAK:
-            pomodoro_paused_from_stage = pomodoro_current_stage;
-            pomodoro_current_stage = POMODORO_PAUSED;
-            pomodoro_elapsed_time += millis() - pomodoro_start_time;
-            apply_pomodoro_theme(false);
-            set_var_pomodoro_stage_label("Pausat");
-            break;
-
-        case POMODORO_PAUSED:
-            pomodoro_current_stage = pomodoro_paused_from_stage ;
-            pomodoro_start_time = millis();
-            apply_pomodoro_theme(true);
-            set_var_pomodoro_stage_label(pomodoro_label.c_str());
-            break;
-    }
-}
-
-void update_pomodoro() {
-    if (pomodoro_current_stage == POMODORO_PAUSED || pomodoro_current_stage == POMODORO_READY) return;
-    
-    uint32_t stage_duration = get_pomodoro_stage_duration(pomodoro_current_stage);
-    unsigned long elapsed_time = pomodoro_elapsed_time + (millis() - pomodoro_start_time);
-
-    if (elapsed_time >= stage_duration) {
-        if (pomodoro_current_stage == POMODORO_FOCUS) {
-            pomodoro_cycles_completed++;
-            if (pomodoro_cycles_completed % CYCLES_BEFORE_LONG_BREAK == 0) { // Si el residu és 0 --> descans llarg
-                pomodoro_start_stage(POMODORO_LONG_BREAK);
-            } else {
-                pomodoro_start_stage(POMODORO_SHORT_BREAK);
-            }
-        } else {
-            pomodoro_start_stage(POMODORO_FOCUS);
-        }
-    }
-}
-
-unsigned long update_pomodoro_remaining_time() {
-    if (pomodoro_current_stage == POMODORO_READY) return 0;
-
-    // Si està pausat, utilitzar l'etapa des de la qual es va pausar per calcular el temps restant
-    pomodoro_stage effective_stage = (pomodoro_current_stage == POMODORO_PAUSED) ? pomodoro_paused_from_stage : pomodoro_current_stage;
-    unsigned long duration = get_pomodoro_stage_duration(effective_stage);
-
-    unsigned long elapsed = pomodoro_elapsed_time;
-    if (pomodoro_current_stage != POMODORO_PAUSED) elapsed += millis() - pomodoro_start_time;
-
-    if (elapsed >= duration) return 0;
-
-    unsigned long remaining_seconds = (duration - elapsed) / 1000;
-    uint8_t remaining_minutes = (remaining_seconds + 59) / 60; // arrodonir (truncar) al minut
-
-    String remaining_time_str = String(remaining_minutes) + "′";
-
-    Serial.printf("stage=%d remaining=%lu changed=%d\n", pomodoro_current_stage, remaining_minutes, remaining_time_str != last_remaining_time_str);
-    Serial.println(remaining_time_str);
-
-    if (remaining_time_str != last_remaining_time_str) { // Només actualitzar si ha canviat
-        last_remaining_time_str = remaining_time_str;
-        set_var_pomodoro_timer(remaining_time_str.c_str());
-    }
-
-    return remaining_minutes;
-}
 
 static void update_page_indicators() {
     // Actualitzar els punts de la part inferior segons la pàgina actual
@@ -208,13 +73,8 @@ static void update_page_buttons() {
 }
 
 static void page_button_event(lv_event_t *event) {
-    if (pomodoro_current_stage != POMODORO_READY && pomodoro_current_stage != POMODORO_PAUSED) {
-        pomodoro_paused_from_stage = pomodoro_current_stage;
-        pomodoro_current_stage = POMODORO_PAUSED;
-        pomodoro_elapsed_time += millis() - pomodoro_start_time;
-        apply_pomodoro_theme(false);
-        set_var_pomodoro_stage_label("Pausat");
-    }
+    pomodoro_pause();
+    sync_pomodoro_ui();
 
     // Registrar l'esddeveniment de clic del botó < o > i canviar la pàgina
     int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
@@ -231,13 +91,8 @@ static void page_button_event(lv_event_t *event) {
 static void tileview_event(lv_event_t *event) {
     if (lv_event_get_code(event) != LV_EVENT_VALUE_CHANGED) return;
 
-    if (pomodoro_current_stage != POMODORO_READY && pomodoro_current_stage != POMODORO_PAUSED) {
-        pomodoro_paused_from_stage = pomodoro_current_stage;
-        pomodoro_current_stage = POMODORO_PAUSED;
-        pomodoro_elapsed_time += millis() - pomodoro_start_time;
-        apply_pomodoro_theme(false);
-        set_var_pomodoro_stage_label("Pausat");
-    }
+    pomodoro_pause();
+    sync_pomodoro_ui();
 
     lv_obj_t *active_tile = lv_tileview_get_tile_act(objects.content);
     if (active_tile == objects.obj0) current_page = 0;
@@ -323,6 +178,28 @@ static void apply_pomodoro_theme(bool active) {
                                 LV_PART_MAIN | LV_STATE_DEFAULT);
     }
     pomodoro_theme_active = active;
+}
+
+static void sync_pomodoro_ui() {
+    static PomodoroStage last_stage = POMODORO_READY;
+    PomodoroStage stage = pomodoro_get_stage();
+    bool active = stage != POMODORO_READY && stage != POMODORO_PAUSED; // Està actiu si no està en READY ni PAUSED
+
+    apply_pomodoro_theme(active);
+
+    if (stage != last_stage) {
+        set_var_pomodoro_stage_label(pomodoro_get_label());
+        last_stage = stage;
+    }
+
+    if (stage != POMODORO_READY) {
+        unsigned long remaining_minutes = pomodoro_get_remaining_minutes();
+        String remaining_time_str = String(remaining_minutes) + "′";
+        if (remaining_time_str != last_remaining_time_str) { // Només actualitzar si ha canviat
+            last_remaining_time_str = remaining_time_str;
+            set_var_pomodoro_timer(remaining_time_str.c_str());
+        }
+    }
 }
 
 static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
@@ -473,8 +350,8 @@ void setup() {
 }
 
 void loop() {
-    update_pomodoro();
-    update_pomodoro_remaining_time();
+    pomodoro_update();
+    sync_pomodoro_ui();
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();
