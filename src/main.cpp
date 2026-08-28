@@ -11,6 +11,7 @@
 #include "ui/fonts.h"
 #include "ui/vars.h"
 #include "modules/pomodoro.h"
+#include "modules/tasks.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -28,7 +29,6 @@ static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 
 static void refresh_pending_frame();
-static void refresh_rect(EpdRect rect, EpdDrawMode mode);
 static void apply_pomodoro_theme(bool active);
 static void sync_pomodoro_ui();
 static bool pomodoro_theme_active = false;
@@ -39,6 +39,10 @@ static lv_obj_t *previous_page_button;
 static lv_obj_t *next_page_button;
 
 String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb el valor real de la variable EEZ
+
+// Notion
+static const int NOTION_QUERY_INTERVAL_MS = 5 * 60 * 1000; // 5 minuts
+static unsigned long last_notion_sync = 0;
 
 static void update_page_indicators() {
     // Actualitzar els punts de la part inferior segons la pàgina actual
@@ -202,6 +206,82 @@ static void sync_pomodoro_ui() {
     }
 }
 
+void update_tasks_list() {
+    // Actualitzar la llista de tasques a la interfície d'usuari
+    static lv_obj_t *task_list = nullptr;
+    if (task_list == nullptr) {
+        task_list = lv_obj_get_child(objects.obj2, 1);
+    }
+
+    lv_obj_clean(task_list);
+
+    for (int i = 0; i < get_task_count(); i++) {
+        // Generar una nova fila (tasca) [CODI COPIAT DE ui/screens.c]
+        NotionTask task = get_task(i);
+        lv_obj_t *task_row = lv_list_create(task_list);
+        lv_obj_set_size(task_row, 800, LV_SIZE_CONTENT);
+        lv_obj_set_style_flex_flow(task_row, LV_FLEX_FLOW_ROW, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_right(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_outline_opa(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_width(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_flex_cross_place(task_row, LV_FLEX_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_radius(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+        lv_obj_t *checkbox = lv_checkbox_create(task_row);
+        lv_checkbox_set_text_static(checkbox, "");
+        lv_obj_set_style_border_color(checkbox, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_transform_width(checkbox, -2, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_transform_height(checkbox, -2, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(checkbox, 0, LV_PART_INDICATOR | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(checkbox, lv_color_hex(0xffffff), LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_bg_opa(checkbox, 255, LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_text_font(checkbox, &lv_font_montserrat_16, LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_outline_color(checkbox, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_border_color(checkbox, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_bg_color(checkbox, lv_color_hex(0x666666), LV_PART_INDICATOR | LV_STATE_CHECKED);
+        lv_obj_set_style_text_color(checkbox, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(checkbox, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_border_opa(checkbox, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_outline_opa(checkbox, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(checkbox, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
+
+        lv_obj_t *subject = lv_label_create(task_row);
+        lv_label_set_text(subject, task.subject.c_str());
+        lv_obj_set_style_text_color(subject, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(subject, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(subject, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_opa(subject, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_radius(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_right(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+        lv_obj_t *title = lv_label_create(task_row);
+        lv_label_set_text(title, task.title.c_str());
+        lv_label_set_long_mode(title, LV_LABEL_LONG_DOT);
+        lv_obj_set_style_text_color(title, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(title, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(title, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_max_width(title, 500, LV_PART_MAIN | LV_STATE_DEFAULT);
+        // if checked
+        lv_obj_set_style_text_decor(title, LV_TEXT_DECOR_STRIKETHROUGH, LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_text_color(title, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
+
+        lv_obj_t *deadline = lv_label_create(task_row);
+        lv_label_set_text(deadline, task.deadline.c_str());
+        lv_obj_set_style_text_color(deadline, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_font(deadline, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_pad_left(deadline, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+        if (task.done) {
+            // TODO: Actualitzar just quan es completa la tasca (des de LVGL), no només quan es carrega la llista
+            lv_obj_add_state(checkbox, LV_STATE_CHECKED);
+            lv_obj_add_state(title, LV_STATE_CHECKED);
+        }
+    }
+}
+
 static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
     (void)driver;
 
@@ -251,13 +331,6 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
 
     frame_pending = true;
     lv_disp_flush_ready(display);
-}
-
-static void refresh_rect(EpdRect rect, EpdDrawMode mode) {
-    // Funció "helper" per actualitzar una àrea específica de la pantalla EPDiy
-    epd_poweron();
-    epd_hl_update_area(&highlevel, mode, epd_ambient_temperature(), rect);
-    epd_poweroff();
 }
 
 static void refresh_pending_frame() {
@@ -322,6 +395,10 @@ void setup() {
         Serial.println("[Touch] Pantalla tàctil GT911 no detectada (Botó 21 i Serial actius).");
     }
 
+    // Inicialitzar WiFi i Notion
+    connect_wifi();
+    query_notion();
+
     // 2. Inicialitzar EPDiy per a LilyGo T5-S3 amb pantalla ED047TC1
     Serial.println("[EPDiy] Iniciant EPDiy per a LilyGo T5-S3 amb pantalla ED047TC1...");
     epd_init(&lilygo_t5s3_board, &ED047TC1, EPD_LUT_64K);
@@ -345,13 +422,27 @@ void setup() {
     ui_init();
     create_page_buttons();
     update_page_indicators();
+
+    // Actualitzar la llista de tasques inicialment
+    update_tasks_list();
+
     lv_refr_now(lv_disp_get_default());
     refresh_pending_frame();
 }
 
 void loop() {
+    // Actualitzar l'estat del temporitzador Pomodoro i la interfície d'usuari
     pomodoro_update();
     sync_pomodoro_ui();
+
+    // Sincronitzar tasques des de Notion cada x temps
+    // TODO: En comptes de fer-ho cada 5 minuts, fer-ho només quan es canvia alguna cosa a Notion. Revisar API.
+    if (millis() - last_notion_sync >= NOTION_QUERY_INTERVAL_MS) {
+        last_notion_sync = millis();
+        query_notion();
+        update_tasks_list();
+    }
+
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();

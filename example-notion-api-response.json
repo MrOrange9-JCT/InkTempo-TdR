@@ -1,0 +1,2748 @@
+{
+    "object": "list",
+    "results": [
+        {
+            "object": "page",
+            "id": "31a6e618-1d5d-801a-8f16-f6f3717fc709",
+            "created_time": "2026-03-05T20:39:00.000Z",
+            "last_edited_time": "2026-03-05T20:39:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-09",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "0c405578-544f-43e9-8867-f971c8c8293a",
+                        "name": "Ed. Física",
+                        "color": "yellow"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Presentació sessió de Colpbol",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Presentació sessió de Colpbol",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Presentaci-sessi-de-Colpbol-31a6e6181d5d801a8f16f6f3717fc709",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3146e618-1d5d-8061-8f6d-eba81af7d5a8",
+            "created_time": "2026-02-27T11:59:00.000Z",
+            "last_edited_time": "2026-02-27T11:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-04",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "ENTREGA Notícia",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "ENTREGA Notícia",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/ENTREGA-Not-cia-3146e6181d5d80618f6deba81af7d5a8",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3136e618-1d5d-806c-baff-c802ccdad057",
+            "created_time": "2026-02-26T09:58:00.000Z",
+            "last_edited_time": "2026-02-26T09:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-04",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "ojvD",
+                        "name": "F5 - R. BiG",
+                        "color": "default"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Tríptic Comparativa Microscopis",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Tríptic Comparativa Microscopis",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Tr-ptic-Comparativa-Microscopis-3136e6181d5d806cbaffc802ccdad057",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80ed-9ea4-c55debb456fc",
+            "created_time": "2026-02-21T15:43:00.000Z",
+            "last_edited_time": "2026-02-21T15:43:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-02T12:45:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "NJM_",
+                        "name": "Alemany",
+                        "color": "pink"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final Lektion 8",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final Lektion 8",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-Lektion-8-30e6e6181d5d80ed9ea4c55debb456fc",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80b3-addd-f9f9fdcb555d",
+            "created_time": "2026-02-21T15:42:00.000Z",
+            "last_edited_time": "2026-02-21T15:43:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-02T10:30:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "BItw",
+                        "name": "Biologia",
+                        "color": "green"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-30e6e6181d5d80b3adddf9f9fdcb555d",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80cc-a61f-f85d95c2793b",
+            "created_time": "2026-02-21T15:42:00.000Z",
+            "last_edited_time": "2026-02-21T15:42:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-02T08:30:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "f01dbc42-8152-40da-b9a0-fe6f3d9415fc",
+                        "name": "Castellà",
+                        "color": "orange"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-30e6e6181d5d80cca61ff85d95c2793b",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80be-a188-fbe5cf3991ca",
+            "created_time": "2026-02-21T15:41:00.000Z",
+            "last_edited_time": "2026-02-27T11:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-26T12:45:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "495c837a-c871-4d17-a89c-aa4cf122fe75",
+                        "name": "Mates",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final Funcions i Derivades",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final Funcions i Derivades",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-Funcions-i-Derivades-30e6e6181d5d80bea188fbe5cf3991ca",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80f9-a31a-d8ff3507046a",
+            "created_time": "2026-02-21T15:41:00.000Z",
+            "last_edited_time": "2026-02-26T09:58:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-26T08:30:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "uO[b",
+                        "name": "Filosofia",
+                        "color": "pink"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-30e6e6181d5d80f9a31ad8ff3507046a",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-803a-897e-ea0118705d57",
+            "created_time": "2026-02-21T15:40:00.000Z",
+            "last_edited_time": "2026-02-27T11:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-27T08:30:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "181bdcb2-1d08-436a-b688-b7dbc05831fb",
+                        "name": "Anglès",
+                        "color": "purple"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final + Lectura + Review + WB",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final + Lectura + Review + WB",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-Lectura-Review-WB-30e6e6181d5d803a897eea0118705d57",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30e6e618-1d5d-80f8-92d6-cc68ff3d8eb5",
+            "created_time": "2026-02-21T15:39:00.000Z",
+            "last_edited_time": "2026-02-27T11:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-27T10:30:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "7d93c20c-7021-46ea-8f27-314f47cbe0f7",
+                        "name": "Català",
+                        "color": "red"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Unitat 4 i 5 + DOSSIER",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Unitat 4 i 5 + DOSSIER",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Unitat-4-i-5-DOSSIER-30e6e6181d5d80f892d6cc68ff3d8eb5",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30c6e618-1d5d-80b3-9300-f703857dc2f4",
+            "created_time": "2026-02-19T16:11:00.000Z",
+            "last_edited_time": "2026-02-21T18:47:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-21T23:59:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "ojvD",
+                        "name": "F5 - R. BiG",
+                        "color": "default"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Tasca Augments Classroom",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Tasca Augments Classroom",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Tasca-Augments-Classroom-30c6e6181d5d80b39300f703857dc2f4",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "30a6e618-1d5d-80c9-863f-e04f0e9b3957",
+            "created_time": "2026-02-17T16:54:00.000Z",
+            "last_edited_time": "2026-02-18T15:20:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": null
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "181bdcb2-1d08-436a-b688-b7dbc05831fb",
+                        "name": "Anglès",
+                        "color": "purple"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Copiar Review a Writing Guide",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Copiar Review a Writing Guide",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Copiar-Review-a-Writing-Guide-30a6e6181d5d80c9863fe04f0e9b3957",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3096e618-1d5d-8045-a59d-fa464f85c017",
+            "created_time": "2026-02-16T21:01:00.000Z",
+            "last_edited_time": "2026-02-17T16:30:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-18",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "NJM_",
+                        "name": "Alemany",
+                        "color": "pink"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Fitxa verbs pronominals",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Fitxa verbs pronominals",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Fitxa-verbs-pronominals-3096e6181d5d8045a59dfa464f85c017",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3066e618-1d5d-80b6-9e69-ca24b5dc1c35",
+            "created_time": "2026-02-13T16:23:00.000Z",
+            "last_edited_time": "2026-02-13T16:23:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-16",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "1bae0728-7aa5-4deb-a15c-b973f0873a60",
+                        "name": "TREC",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Informe preliminar",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Informe preliminar",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Informe-preliminar-3066e6181d5d80b69e69ca24b5dc1c35",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3046e618-1d5d-8000-8106-f0aee34188be",
+            "created_time": "2026-02-11T10:33:00.000Z",
+            "last_edited_time": "2026-02-27T11:59:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "🏗️"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-03",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "kkaM",
+                        "name": "Tecno",
+                        "color": "brown"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Final Unitat 7, 8 i 9",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Final Unitat 7, 8 i 9",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Final-Unitat-7-8-i-9-3046e6181d5d80008106f0aee34188be",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3046e618-1d5d-80ab-a33a-ce3dcc20bbb5",
+            "created_time": "2026-02-11T10:26:00.000Z",
+            "last_edited_time": "2026-02-21T18:50:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "📹"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": false
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-03-12T23:59:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "ENTREGA Reportatge",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "ENTREGA Reportatge",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/ENTREGA-Reportatge-3046e6181d5d80aba33ace3dcc20bbb5",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3036e618-1d5d-80a0-936c-e6fbd171d2a3",
+            "created_time": "2026-02-10T15:41:00.000Z",
+            "last_edited_time": "2026-02-21T18:48:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "📝"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-17",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "7d93c20c-7021-46ea-8f27-314f47cbe0f7",
+                        "name": "Català",
+                        "color": "red"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Text argumentatiu",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Text argumentatiu",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Text-argumentatiu-3036e6181d5d80a0936ce6fbd171d2a3",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "3006e618-1d5d-8066-a7f9-df7d32bfaeb4",
+            "created_time": "2026-02-07T15:24:00.000Z",
+            "last_edited_time": "2026-02-09T18:48:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "📹"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-09",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Gravació Reportatge 1",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Gravació Reportatge 1",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Gravaci-Reportatge-1-3006e6181d5d8066a7f9df7d32bfaeb4",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2ff6e618-1d5d-8053-8fd8-c6842571328f",
+            "created_time": "2026-02-06T16:37:00.000Z",
+            "last_edited_time": "2026-02-06T17:12:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-10",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "kkaM",
+                        "name": "Tecno",
+                        "color": "brown"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Activitats pàg. 227",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Activitats pàg. 227",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Activitats-p-g-227-2ff6e6181d5d80538fd8c6842571328f",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2ff6e618-1d5d-80d6-b227-e3aeaf9fd15f",
+            "created_time": "2026-02-06T16:37:00.000Z",
+            "last_edited_time": "2026-02-11T10:20:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-12",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "181bdcb2-1d08-436a-b688-b7dbc05831fb",
+                        "name": "Anglès",
+                        "color": "purple"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Rewrite sentences",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Rewrite sentences",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Rewrite-sentences-2ff6e6181d5d80d6b227e3aeaf9fd15f",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2ff6e618-1d5d-8023-927c-cd40d253aa8d",
+            "created_time": "2026-02-06T16:36:00.000Z",
+            "last_edited_time": "2026-02-26T09:58:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-10",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "495c837a-c871-4d17-a89c-aa4cf122fe75",
+                        "name": "Mates",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "VOL. Autoavaluació pàg. 200",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "VOL. Autoavaluació pàg. 200",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/VOL-Autoavaluaci-p-g-200-2ff6e6181d5d8023927ccd40d253aa8d",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fe6e618-1d5d-80f4-a5a1-f5463eb7842b",
+            "created_time": "2026-02-05T13:41:00.000Z",
+            "last_edited_time": "2026-02-05T16:08:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-06",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "ojvD",
+                        "name": "F5 - R. BiG",
+                        "color": "default"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Pòster CIÈNCIA/PSEUDOCIÈNCIA",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Pòster CIÈNCIA/PSEUDOCIÈNCIA",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/P-ster-CI-NCIA-PSEUDOCI-NCIA-2fe6e6181d5d80f4a5a1f5463eb7842b",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fd6e618-1d5d-80dd-b4d1-e609754fc934",
+            "created_time": "2026-02-04T12:30:00.000Z",
+            "last_edited_time": "2026-02-05T15:24:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-06",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "kkaM",
+                        "name": "Tecno",
+                        "color": "brown"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Activitats 26 (pàg. 208) + AF",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Activitats 26 (pàg. 208) + AF",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Activitats-26-p-g-208-AF-2fd6e6181d5d80ddb4d1e609754fc934",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fc6e618-1d5d-8081-836c-f2d0981882a5",
+            "created_time": "2026-02-03T14:39:00.000Z",
+            "last_edited_time": "2026-02-03T16:15:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-05",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "495c837a-c871-4d17-a89c-aa4cf122fe75",
+                        "name": "Mates",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Act. 119, 120 (full), 15, 16 (pàg. 194), 25ab (pàg. 199)",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Act. 119, 120 (full), 15, 16 (pàg. 194), 25ab (pàg. 199)",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Act-119-120-full-15-16-p-g-194-25ab-p-g-199-2fc6e6181d5d8081836cf2d0981882a5",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fc6e618-1d5d-8052-af47-fb9a579ddaf4",
+            "created_time": "2026-02-03T14:37:00.000Z",
+            "last_edited_time": "2026-02-03T15:03:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-05",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "495c837a-c871-4d17-a89c-aa4cf122fe75",
+                        "name": "Mates",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "VOL. 17 (pàg. 194) i 25cd (pàg. 199)",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "VOL. 17 (pàg. 194) i 25cd (pàg. 199)",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/VOL-17-p-g-194-i-25cd-p-g-199-2fc6e6181d5d8052af47fb9a579ddaf4",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-80ab-990e-d75ab26e5c75",
+            "created_time": "2026-02-02T15:53:00.000Z",
+            "last_edited_time": "2026-02-19T08:58:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "🎙️"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-19",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Gravació 3r Capítol Pòdcast",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Gravació 3r Capítol Pòdcast",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Gravaci-3r-Cap-tol-P-dcast-2fb6e6181d5d80ab990ed75ab26e5c75",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-8052-b92b-f4d3a69bfb02",
+            "created_time": "2026-02-02T15:50:00.000Z",
+            "last_edited_time": "2026-02-11T15:23:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-27",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "7d93c20c-7021-46ea-8f27-314f47cbe0f7",
+                        "name": "Català",
+                        "color": "red"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Dictats+Activitats per pujar nota",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Dictats+Activitats per pujar nota",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Dictats-Activitats-per-pujar-nota-2fb6e6181d5d8052b92bf4d3a69bfb02",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-8026-b005-eb6d4f0c4210",
+            "created_time": "2026-02-02T15:49:00.000Z",
+            "last_edited_time": "2026-02-11T15:48:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-27",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "7d93c20c-7021-46ea-8f27-314f47cbe0f7",
+                        "name": "Català",
+                        "color": "red"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Activitats U4+U5 Llibre",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Activitats U4+U5 Llibre",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Activitats-U4-U5-Llibre-2fb6e6181d5d8026b005eb6d4f0c4210",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-801d-9445-db92f9deab4b",
+            "created_time": "2026-02-02T10:27:00.000Z",
+            "last_edited_time": "2026-02-16T15:31:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "🗣️"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-13",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "181bdcb2-1d08-436a-b688-b7dbc05831fb",
+                        "name": "Anglès",
+                        "color": "purple"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Speaking Task",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Speaking Task",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Speaking-Task-2fb6e6181d5d801d9445db92f9deab4b",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-80ce-adef-f72de45560bb",
+            "created_time": "2026-02-02T10:27:00.000Z",
+            "last_edited_time": "2026-02-25T07:20:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "🥎"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-24T23:59:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "0c405578-544f-43e9-8867-f971c8c8293a",
+                        "name": "Ed. Física",
+                        "color": "yellow"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Entrega treball en grup (",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Entrega treball en grup (",
+                            "href": null
+                        },
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Colpbol",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": true,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Colpbol",
+                            "href": null
+                        },
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": ")",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": ")",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Entrega-treball-en-grup-Colpbol-2fb6e6181d5d80ceadeff72de45560bb",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-8048-8341-dbfcb638bd5d",
+            "created_time": "2026-02-02T10:26:00.000Z",
+            "last_edited_time": "2026-02-04T15:40:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-05",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "181bdcb2-1d08-436a-b688-b7dbc05831fb",
+                        "name": "Anglès",
+                        "color": "purple"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Activities on page 54",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Activities on page 54",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Activities-on-page-54-2fb6e6181d5d80488341dbfcb638bd5d",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-80d7-9c5c-ecf422c67664",
+            "created_time": "2026-02-02T10:25:00.000Z",
+            "last_edited_time": "2026-02-03T16:15:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-06T23:59:00.000+01:00",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Entrega de l’entrevista",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Entrega de l’entrevista",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Entrega-de-l-entrevista-2fb6e6181d5d80d79c5cecf422c67664",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-8070-9d0f-c684a2b290a8",
+            "created_time": "2026-02-02T10:23:00.000Z",
+            "last_edited_time": "2026-02-04T15:40:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "🎙️"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-04",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "16e2d918-63d8-47fa-95f5-3f48af0b6542",
+                        "name": "F6 - CiP",
+                        "color": "gray"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Gravació 2n Capítol Pòdcast",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Gravació 2n Capítol Pòdcast",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Gravaci-2n-Cap-tol-P-dcast-2fb6e6181d5d80709d0fc684a2b290a8",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fb6e618-1d5d-80e9-936c-de55e09fae3f",
+            "created_time": "2026-02-02T10:20:00.000Z",
+            "last_edited_time": "2026-02-09T18:47:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": {
+                "type": "emoji",
+                "emoji": "📙"
+            },
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-09",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "f01dbc42-8152-40da-b9a0-fe6f3d9415fc",
+                        "name": "Castellà",
+                        "color": "orange"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "EXAMEN Lectura “",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "EXAMEN Lectura “",
+                            "href": null
+                        },
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Crónica de una muerte anunciada”",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": true,
+                                "italic": true,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Crónica de una muerte anunciada”",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/EXAMEN-Lectura-Cr-nica-de-una-muerte-anunciada-2fb6e6181d5d80e9936cde55e09fae3f",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fa6e618-1d5d-8083-88ab-d2c886ffe1e8",
+            "created_time": "2026-02-01T16:38:00.000Z",
+            "last_edited_time": "2026-02-02T15:16:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "cc24b45d-2147-4cbd-9e52-f488aa4d1968"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-02",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "f01dbc42-8152-40da-b9a0-fe6f3d9415fc",
+                        "name": "Castellà",
+                        "color": "orange"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Actividades pàg. 68",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Actividades pàg. 68",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Actividades-p-g-68-2fa6e6181d5d808388abd2c886ffe1e8",
+            "public_url": null
+        },
+        {
+            "object": "page",
+            "id": "2fa6e618-1d5d-80be-b092-d391f87a3181",
+            "created_time": "2026-02-01T16:35:00.000Z",
+            "last_edited_time": "2026-02-01T18:02:00.000Z",
+            "created_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "last_edited_by": {
+                "object": "user",
+                "id": "5855f9aa-0855-4791-bd30-3edd13867764"
+            },
+            "cover": null,
+            "icon": null,
+            "parent": {
+                "type": "data_source_id",
+                "data_source_id": "2fa6e618-1d5d-80a6-90f8-000b2e967c26",
+                "database_id": "2fa6e618-1d5d-8005-9eca-eeeb291768d4"
+            },
+            "in_trash": false,
+            "is_archived": false,
+            "is_locked": false,
+            "properties": {
+                "Fet": {
+                    "id": "hvft",
+                    "type": "checkbox",
+                    "checkbox": true
+                },
+                "Data límit": {
+                    "id": "vVIz",
+                    "type": "date",
+                    "date": {
+                        "start": "2026-02-02",
+                        "end": null,
+                        "time_zone": null
+                    }
+                },
+                "Matèria": {
+                    "id": "%7B%3Eby",
+                    "type": "select",
+                    "select": {
+                        "id": "495c837a-c871-4d17-a89c-aa4cf122fe75",
+                        "name": "Mates",
+                        "color": "blue"
+                    }
+                },
+                "Tasca": {
+                    "id": "title",
+                    "type": "title",
+                    "title": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": "Activitat 117 (full)",
+                                "link": null
+                            },
+                            "annotations": {
+                                "bold": false,
+                                "italic": false,
+                                "strikethrough": false,
+                                "underline": false,
+                                "code": false,
+                                "color": "default"
+                            },
+                            "plain_text": "Activitat 117 (full)",
+                            "href": null
+                        }
+                    ]
+                }
+            },
+            "url": "https://app.notion.com/p/Activitat-117-full-2fa6e6181d5d80beb092d391f87a3181",
+            "public_url": null
+        }
+    ],
+    "next_cursor": null,
+    "has_more": false,
+    "type": "page_or_data_source",
+    "page_or_data_source": {},
+    "request_id": "830f278c-13d3-4efd-af87-39dac293c5cb"
+}
