@@ -81,6 +81,7 @@ static void page_button_event(lv_event_t *event) {
     sync_pomodoro_ui();
 
     // Registrar l'esddeveniment de clic del botó < o > i canviar la pàgina
+    // TODO: Considerar si es pot canviar el mode d'actualització d'EPDiy per evitar ghosting
     int8_t direction = (int8_t)(intptr_t)lv_event_get_user_data(event);
     int8_t next_page = (int8_t)current_page + direction;
     if (next_page < 0 || next_page > 2) return;

@@ -25,7 +25,7 @@ std::vector<NotionTask> tasks; // Llista de tasques obtingudes de Notion (un vec
 
 void connect_wifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-    Serial.print("Connecting WiFi");
+    Serial.print("[Notion] Connecting WiFi");
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
@@ -71,9 +71,9 @@ void query_notion() {
     http.addHeader("Notion-Version", "2026-03-11");
 
     int code = http.POST("{}");
-    Serial.println("HTTP: " + String(code));
+    Serial.println("[Notion] HTTP: " + String(code));
     if (code != 200) {
-        Serial.println(http.getString());
+        Serial.println("[Notion] Error: " + http.getString());
         http.end();
         return;
     }
