@@ -211,6 +211,8 @@ void update_tasks_list() {
     static lv_obj_t *task_list = nullptr;
     if (task_list == nullptr) {
         task_list = lv_obj_get_child(objects.obj2, 1);
+        lv_obj_set_scroll_dir(task_list, LV_DIR_VER);
+        lv_obj_set_scrollbar_mode(task_list, LV_SCROLLBAR_MODE_OFF);
     }
 
     lv_obj_clean(task_list);
@@ -219,7 +221,9 @@ void update_tasks_list() {
         // Generar una nova fila (tasca) [CODI COPIAT DE ui/screens.c]
         NotionTask task = get_task(i);
         lv_obj_t *task_row = lv_list_create(task_list);
-        lv_obj_set_size(task_row, 800, LV_SIZE_CONTENT);
+        lv_obj_set_size(task_row, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+        lv_obj_set_scroll_dir(task_row, LV_DIR_NONE);
+        lv_obj_set_scrollbar_mode(task_row, LV_SCROLLBAR_MODE_OFF);
         lv_obj_set_style_flex_flow(task_row, LV_FLEX_FLOW_ROW, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_left(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_right(task_row, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -7,7 +7,18 @@
 #include "secrets.h"
 #include "tasks.h"
 
+static const char* CAT_WEEKDAYS[7] = { "dg.", "dl.", "dt.", "dc.", "dj.", "dv.", "ds." }; // !!! 0=Sunday...6=Saturday
+static const char* CAT_MONTHS[12] = {
+    "gen.", "febr.", "març", "abr.", "maig", "juny",
+    "jul.", "ag.", "set.", "oct.", "nov.", "des."
+};
 
+// Funció per calcular el dia de la setmana (0=Sunday...6=Saturday) [Algoritme de Sakamoto]
+static int day_of_week(int year, int month, int day) {
+    static int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+    if (month < 3) year -= 1;
+    return (year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7;
+}
 
 std::vector<NotionTask> tasks; // Llista de tasques obtingudes de Notion (un vector és un array dinàmic)
 
@@ -20,6 +31,34 @@ void connect_wifi() {
         Serial.print(".");
     }
     Serial.println(" Done");
+}
+
+String format_deadline_cat(const String &iso) {
+    if (iso.isEmpty()) return "";
+
+    int year, month, day, hour, minute;
+    // Parses "2026-03-02T12:45:00.000+01:00" — ignores seconds/ms/offset
+    int parsed = sscanf(iso.c_str(), "%d-%d-%dT%d:%d", &year, &month, &day, &hour, &minute);
+    if (parsed < 3) {
+        parsed = sscanf(iso.c_str(), "%d-%d-%d", &year, &month, &day);
+    }
+    if (parsed < 3) return iso; // fallback a string original
+
+    int weekday = day_of_week(year, month, day);
+
+    char buf[32];
+
+    if (parsed >= 5) {
+        // Data i hora
+        snprintf(buf, sizeof(buf), "%s %d %s %02d:%02d",
+                 CAT_WEEKDAYS[weekday], day, CAT_MONTHS[month - 1], hour, minute);
+    } else {
+        // Només data
+        snprintf(buf, sizeof(buf), "%s %d %s",
+                 CAT_WEEKDAYS[weekday], day, CAT_MONTHS[month - 1]);
+    }
+
+    return String(buf);
 }
 
 void query_notion() {
@@ -56,7 +95,7 @@ void query_notion() {
         t.title = page["Tasca"]["title"][0]["plain_text"].as<String>();
         t.deadline = page["Data límit"]["date"]["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
         //TODO: Convertir la data a format més llegible (ex. dt. 8 set.)
-
+        
         tasks.push_back(t);
 
         // Serial.println("--- Task " + String(i + 1) + " ---");
@@ -74,6 +113,10 @@ void query_notion() {
         if (b.deadline.isEmpty()) return true;  // a goes before b
         return a.deadline < b.deadline;
     });
+
+    for (NotionTask &task : tasks) {
+        task.deadline = format_deadline_cat(task.deadline);
+    }
 }
 
 NotionTask get_task(int index) {
