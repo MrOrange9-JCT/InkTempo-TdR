@@ -7,3 +7,4 @@
 *.a
 Thumbs.db
 .DS_Store
+src/secrets.h
