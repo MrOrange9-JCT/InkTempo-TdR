@@ -639,7 +639,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
-                            lv_label_set_text_static(obj, "Concentració");
+                            lv_label_set_text_static(obj, "Temps de concentració");
                         }
                         {
                             lv_obj_t *obj = lv_label_create(parent_obj);

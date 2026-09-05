@@ -1,9 +1,10 @@
 #include "pomodoro.h"
+#include "stats.h"
 
 #include <Arduino.h>
 
 // Temporitzador Pomodoro
-static const uint32_t FOCUS_DURATION_MS = 5 * 60 * 1000; //FIXME: 5 min (PLACEHOLDER)
+static const uint32_t FOCUS_DURATION_MS = 25 * 60 * 1000; // 25 min
 static const uint32_t SHORT_BREAK_DURATION_MS = 5 * 60 * 1000; // 5 min
 static const uint32_t LONG_BREAK_DURATION_MS = 10 * 60 * 1000; // 10 min
 static const uint8_t CYCLES_BEFORE_LONG_BREAK = 2;
@@ -116,4 +117,9 @@ unsigned long pomodoro_get_remaining_minutes() {
 
 	// Arrodonir (truncar) al minut
 	return ((duration - elapsed) / 1000 + 59) / 60;
+
+	// Si està en sessio de concentració, sumar els minuts passats a les estadístiques
+	if (current_stage == POMODORO_FOCUS) {
+		stats_add_focus_minutes(((duration - elapsed) / 1000 + 59) / 60);
+	}
 }

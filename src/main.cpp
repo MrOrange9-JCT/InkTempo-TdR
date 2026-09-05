@@ -12,6 +12,7 @@
 #include "ui/vars.h"
 #include "modules/pomodoro.h"
 #include "modules/tasks.h"
+#include "modules/stats.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -28,9 +29,10 @@ static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 
-static void refresh_pending_frame();
+static void refresh_pending_frame(bool allow_during_touch = false);
 static void apply_pomodoro_theme(bool active);
 static void sync_pomodoro_ui();
+static void task_checked_event(lv_event_t *event);
 static bool pomodoro_theme_active = false;
 
 // Estat de les pàgines
@@ -251,16 +253,21 @@ void update_tasks_list() {
         lv_obj_set_style_border_opa(checkbox, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_outline_opa(checkbox, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_color(checkbox, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_add_event_cb(checkbox, task_checked_event, LV_EVENT_VALUE_CHANGED, nullptr);
 
         lv_obj_t *subject = lv_label_create(task_row);
         lv_label_set_text(subject, task.subject.c_str());
         lv_obj_set_style_text_color(subject, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_font(subject, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
-        lv_obj_set_style_bg_color(subject, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_bg_color(subject, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_opa(subject, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_radius(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_left(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_right(subject, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_outline_width(subject, 2, LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_outline_color(subject, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_bg_color(subject, lv_color_hex(0xffffff), LV_PART_MAIN | LV_STATE_CHECKED);
+        lv_obj_set_style_text_color(subject, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
 
         lv_obj_t *title = lv_label_create(task_row);
         lv_label_set_text(title, task.title.c_str());
@@ -275,7 +282,7 @@ void update_tasks_list() {
 
         lv_obj_t *deadline = lv_label_create(task_row);
         lv_label_set_text(deadline, task.deadline.c_str());
-        lv_obj_set_style_text_color(deadline, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
+        lv_obj_set_style_text_color(deadline, lv_color_hex(0x555555), LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_font(deadline, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_pad_left(deadline, 8, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -283,8 +290,37 @@ void update_tasks_list() {
             // TODO: Actualitzar just quan es completa la tasca (des de LVGL), no només quan es carrega la llista
             lv_obj_add_state(checkbox, LV_STATE_CHECKED);
             lv_obj_add_state(title, LV_STATE_CHECKED);
+            lv_obj_add_state(subject, LV_STATE_CHECKED);
         }
     }
+}
+
+static void task_checked_event(lv_event_t *event) {
+    lv_obj_t *checkbox = lv_event_get_target(event);
+    bool checked = lv_obj_has_state(checkbox, LV_STATE_CHECKED);
+
+    // Obtenir el títol de la tasca associada al checkbox
+    lv_obj_t *task_row = lv_obj_get_parent(checkbox);
+    lv_obj_t *title_label = lv_obj_get_child(task_row, 2);
+    const char *task_title = lv_label_get_text(title_label);
+
+    // Actualitzar l'estat de la tasca a Notion (aquí només es mostra un missatge)
+    Serial.printf("[Notion] Tasca (%d) '%s' marcada com %s.\n", lv_obj_get_index(task_row), task_title, checked ? "completa" : "incompleta");
+
+    lv_timer_handler();
+    refresh_pending_frame(true);
+
+    mark_task_done(lv_obj_get_index(task_row), checked);
+
+    query_notion(); // Actualitzar la llista de tasques després de marcar com a completada/incompleta
+    update_tasks_list();
+
+    // TODO: Millorar actualització amb un altre mode de refresh, hi ha molt de ghosting amb el mode actual (MODE_GL16)
+}
+
+void update_stats_screen() {
+    // Actualitzar la pantalla d'estadístiques amb les dades actuals
+    // S'haurà de canviar a EEZ Studio per poder establir les variables (vars.c)
 }
 
 static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
@@ -338,8 +374,8 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
     lv_disp_flush_ready(display);
 }
 
-static void refresh_pending_frame() {
-    if (!frame_pending || touch_active) return;
+static void refresh_pending_frame(bool allow_during_touch) {
+    if (!frame_pending || (touch_active && !allow_during_touch)) return;
 
     EpdRect full_area = { .x = 0, .y = 0, .width = display_width, .height = display_height };
     frame_pending = false;
@@ -383,9 +419,9 @@ void setup() {
     Serial.begin(115200);
     delay(1000);
 
-    Serial.println("\n==========================================");
+    Serial.println("\n=========================================");
     Serial.println("      TREC - Jordi Castro - 2026-27");
-    Serial.println("==========================================");
+    Serial.println("=========================================");
 
     // 1. Inicialitzar botó1 i pantalla tàctil
     pinMode(LILYGO_T5S3_BUTTON_1, INPUT_PULLUP);
@@ -415,6 +451,10 @@ void setup() {
     highlevel.mirror_x = false;
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
 
+    // Actualitzar la llista de tasques i iniciar RTC
+    update_tasks_list();
+    stats_init();
+
     // 4. Netejar pantalla
     Serial.println("[EPDiy] Netejant pantalla inicial...");
     epd_poweron();
@@ -427,9 +467,6 @@ void setup() {
     ui_init();
     create_page_buttons();
     update_page_indicators();
-
-    // Actualitzar la llista de tasques inicialment
-    update_tasks_list();
 
     lv_refr_now(lv_disp_get_default());
     refresh_pending_frame();

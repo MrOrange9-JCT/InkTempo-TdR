@@ -6,6 +6,7 @@
 #include <ArduinoJson.h>
 #include "secrets.h"
 #include "tasks.h"
+#include "stats.h"
 
 static const char* CAT_WEEKDAYS[7] = { "dg.", "dl.", "dt.", "dc.", "dj.", "dv.", "ds." }; // !!! 0=Sunday...6=Saturday
 static const char* CAT_MONTHS[12] = {
@@ -87,13 +88,14 @@ void query_notion() {
     tasks.clear();
 
     for (int i = 0; i < (int)doc["results"].size(); i++) {
-        JsonObject page = doc["results"][i]["properties"];
+        JsonObject page = doc["results"][i];
 
         NotionTask t;
-        t.done = page["Fet"]["checkbox"].as<bool>();
-        t.subject = page["Matèria"]["select"]["name"].as<String>();
-        t.title = page["Tasca"]["title"][0]["plain_text"].as<String>();
-        t.deadline = page["Data límit"]["date"]["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
+        t.done = page["properties"]["Fet"]["checkbox"].as<bool>();
+        t.subject = page["properties"]["Matèria"]["select"]["name"].as<String>();
+        t.title = page["properties"]["Tasca"]["title"][0]["plain_text"].as<String>();
+        t.deadline = page["properties"]["Data límit"]["date"]["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
+        t.id = page["id"].as<String>(); // ID de la pàgina a Notion
         //TODO: Convertir la data a format més llegible (ex. dt. 8 set.)
         
         tasks.push_back(t);
@@ -130,4 +132,28 @@ NotionTask get_task(int index) {
 
 int get_task_count() {
     return (int)tasks.size();
+}
+
+void mark_task_done(int index, bool done) {
+    if (index < tasks.size()) {
+        tasks[index].done = done;
+        stats_add_task_completed();
+
+        HTTPClient http;
+        String url = "https://api.notion.com/v1/pages/" + tasks[index].id;
+
+        http.begin(url);
+        http.addHeader("Authorization", String("Bearer ") + NOTION_TOKEN);
+        http.addHeader("Content-Type", "application/json");
+        http.addHeader("Notion-Version", "2026-03-11");
+
+        String payload = "{\"properties\": {\"Fet\": {\"checkbox\": " + String(done ? "true" : "false") + "}}}";
+
+        int response_code = http.PATCH(payload);
+        Serial.println("[Notion] HTTP: " + String(response_code));
+        if (response_code != 200) {
+            Serial.println("[Notion] Error: " + http.getString());
+        }
+        http.end();
+    }
 }
