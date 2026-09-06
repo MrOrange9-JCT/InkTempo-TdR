@@ -668,8 +668,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             ((lv_obj_t **)&objects)[startWidgetIndex + 4] = obj;
                             lv_obj_set_pos(obj, 0, 40);
                             lv_obj_set_size(obj, 710, 10);
-                            lv_bar_set_range(obj, 0, 90);
-                            lv_bar_set_value(obj, 25, LV_ANIM_OFF);
+                            lv_bar_set_range(obj, 0, 100);
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_DEFAULT);
@@ -728,8 +727,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             ((lv_obj_t **)&objects)[startWidgetIndex + 8] = obj;
                             lv_obj_set_pos(obj, 0, 40);
                             lv_obj_set_size(obj, 710, 10);
-                            lv_bar_set_range(obj, 0, 5);
-                            lv_bar_set_value(obj, 3, LV_ANIM_OFF);
+                            lv_bar_set_range(obj, 0, 100);
                             lv_obj_set_style_bg_opa(obj, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_bg_color(obj, lv_color_hex(0x000000), LV_PART_INDICATOR | LV_STATE_DEFAULT);
@@ -759,6 +757,7 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
                             lv_obj_set_style_text_font(obj, &ui_font_inter_medium_24pt, LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_color(obj, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
                             lv_obj_set_style_text_align(obj, LV_TEXT_ALIGN_LEFT, LV_PART_MAIN | LV_STATE_DEFAULT);
+                            lv_obj_add_flag(parent_obj, LV_OBJ_FLAG_HIDDEN); // TODO: Hide the example until somethig is implemented
                             lv_label_set_text_static(obj, "Exemple");
                         }
                         {
@@ -802,7 +801,48 @@ void create_user_widget_stats_screen(lv_obj_t *parent_obj, int startWidgetIndex)
 }
 
 void tick_user_widget_stats_screen(int startWidgetIndex) {
-    (void)startWidgetIndex;
+    int32_t focus_value = get_var_focus_counter_value();
+    int32_t focus_goal = get_var_focus_counter_goal();
+    int32_t task_value = get_var_task_counter_value();
+    int32_t task_goal = get_var_task_counter_goal();
+
+    lv_label_set_text_fmt(((lv_obj_t **)&objects)[startWidgetIndex + 2], "%ld min", (long)focus_value);
+    lv_label_set_text_fmt(((lv_obj_t **)&objects)[startWidgetIndex + 3], "%ld min", (long)focus_goal);
+    lv_label_set_text_fmt(((lv_obj_t **)&objects)[startWidgetIndex + 6], "%ld", (long)task_value);
+    lv_label_set_text_fmt(((lv_obj_t **)&objects)[startWidgetIndex + 7], "%ld", (long)task_goal);
+
+    {
+        int32_t new_val = focus_goal;
+        int32_t cur_val = lv_bar_get_max_value(((lv_obj_t **)&objects)[startWidgetIndex + 4]);
+        if (new_val != cur_val && new_val > lv_bar_get_min_value(((lv_obj_t **)&objects)[startWidgetIndex + 4])) {
+            lv_bar_set_range(((lv_obj_t **)&objects)[startWidgetIndex + 4],
+                             lv_bar_get_min_value(((lv_obj_t **)&objects)[startWidgetIndex + 4]), new_val);
+        }
+    }
+    {
+        int32_t new_val = focus_value;
+        if (new_val != lv_bar_get_value(((lv_obj_t **)&objects)[startWidgetIndex + 4])) {
+            tick_value_change_obj = ((lv_obj_t **)&objects)[startWidgetIndex + 4];
+            lv_bar_set_value(((lv_obj_t **)&objects)[startWidgetIndex + 4], new_val, LV_ANIM_OFF);
+            tick_value_change_obj = NULL;
+        }
+    }
+    {
+        int32_t new_val = task_goal;
+        int32_t cur_val = lv_bar_get_max_value(((lv_obj_t **)&objects)[startWidgetIndex + 8]);
+        if (new_val != cur_val && new_val > lv_bar_get_min_value(((lv_obj_t **)&objects)[startWidgetIndex + 8])) {
+            lv_bar_set_range(((lv_obj_t **)&objects)[startWidgetIndex + 8],
+                             lv_bar_get_min_value(((lv_obj_t **)&objects)[startWidgetIndex + 8]), new_val);
+        }
+    }
+    {
+        int32_t new_val = task_value;
+        if (new_val != lv_bar_get_value(((lv_obj_t **)&objects)[startWidgetIndex + 8])) {
+            tick_value_change_obj = ((lv_obj_t **)&objects)[startWidgetIndex + 8];
+            lv_bar_set_value(((lv_obj_t **)&objects)[startWidgetIndex + 8], new_val, LV_ANIM_OFF);
+            tick_value_change_obj = NULL;
+        }
+    }
 }
 
 typedef void (*tick_screen_func_t)();

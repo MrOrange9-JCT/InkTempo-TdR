@@ -7,19 +7,7 @@
 #include "secrets.h"
 #include "tasks.h"
 #include "stats.h"
-
-static const char* CAT_WEEKDAYS[7] = { "dg.", "dl.", "dt.", "dc.", "dj.", "dv.", "ds." }; // !!! 0=Sunday...6=Saturday
-static const char* CAT_MONTHS[12] = {
-    "gen.", "febr.", "març", "abr.", "maig", "juny",
-    "jul.", "ag.", "set.", "oct.", "nov.", "des."
-};
-
-// Funció per calcular el dia de la setmana (0=Sunday...6=Saturday) [Algoritme de Sakamoto]
-static int day_of_week(int year, int month, int day) {
-    static int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
-    if (month < 3) year -= 1;
-    return (year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7;
-}
+#include "date_format.h"
 
 std::vector<NotionTask> tasks; // Llista de tasques obtingudes de Notion (un vector és un array dinàmic)
 
@@ -45,18 +33,16 @@ String format_deadline_cat(const String &iso) {
     }
     if (parsed < 3) return iso; // fallback a string original
 
-    int weekday = day_of_week(year, month, day);
-
     char buf[32];
+    char date_buf[24];
+    format_date_cat(date_buf, sizeof(date_buf), year, month, day);
 
     if (parsed >= 5) {
         // Data i hora
-        snprintf(buf, sizeof(buf), "%s %d %s %02d:%02d",
-                 CAT_WEEKDAYS[weekday], day, CAT_MONTHS[month - 1], hour, minute);
+        snprintf(buf, sizeof(buf), "%s %02d:%02d", date_buf, hour, minute);
     } else {
         // Només data
-        snprintf(buf, sizeof(buf), "%s %d %s",
-                 CAT_WEEKDAYS[weekday], day, CAT_MONTHS[month - 1]);
+        snprintf(buf, sizeof(buf), "%s", date_buf);
     }
 
     return String(buf);
@@ -137,7 +123,7 @@ int get_task_count() {
 void mark_task_done(int index, bool done) {
     if (index < tasks.size()) {
         tasks[index].done = done;
-        stats_add_task_completed();
+        stats_add_task_completed(done); // Incrementa el comptador de tasques completades només si s'ha marcat com a fet
 
         HTTPClient http;
         String url = "https://api.notion.com/v1/pages/" + tasks[index].id;

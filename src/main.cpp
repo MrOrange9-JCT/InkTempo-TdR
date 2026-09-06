@@ -1,6 +1,9 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <TouchDrvGT911.hpp>
+#include <string.h>
+#include <stdio.h>
+#include <time.h>
 
 #include <esp_heap_caps.h>
 #include <epdiy.h>
@@ -13,6 +16,7 @@
 #include "modules/pomodoro.h"
 #include "modules/tasks.h"
 #include "modules/stats.h"
+#include "modules/date_format.h"
 
 // Controlador tàctil
 static TouchDrvGT911 touch;
@@ -32,6 +36,7 @@ static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 static void refresh_pending_frame(bool allow_during_touch = false);
 static void apply_pomodoro_theme(bool active);
 static void sync_pomodoro_ui();
+static void update_header_time();
 static void task_checked_event(lv_event_t *event);
 static bool pomodoro_theme_active = false;
 
@@ -45,6 +50,22 @@ String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb e
 // Notion
 static const int NOTION_QUERY_INTERVAL_MS = 5 * 60 * 1000; // 5 minuts
 static unsigned long last_notion_sync = 0;
+
+static void update_header_time() {
+    static char last_time[32] = "";
+    struct tm timeinfo;
+
+    if (!getLocalTime(&timeinfo, 0)) return;
+
+    char date_text[24];
+    char time_text[sizeof(last_time)];
+    format_date_cat(date_text, sizeof(date_text), timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday);
+    snprintf(time_text, sizeof(time_text), "%02d:%02d  %s", timeinfo.tm_hour, timeinfo.tm_min, date_text);
+    if (strcmp(time_text, last_time) == 0) return;
+
+    strcpy(last_time, time_text);
+    set_var_current_time(time_text);
+}
 
 static void update_page_indicators() {
     // Actualitzar els punts de la part inferior segons la pàgina actual
@@ -203,6 +224,9 @@ static void sync_pomodoro_ui() {
         unsigned long remaining_minutes = pomodoro_get_remaining_minutes();
         String remaining_time_str = String(remaining_minutes) + "′";
         if (remaining_time_str != last_remaining_time_str) { // Només actualitzar si ha canviat
+            if (stage == POMODORO_FOCUS) {
+                stats_add_focus_minutes(1); // Afegir 1 minut a les estadístiques de concentració
+            }
             last_remaining_time_str = remaining_time_str;
             set_var_pomodoro_timer(remaining_time_str.c_str());
         }
@@ -451,8 +475,7 @@ void setup() {
     highlevel.mirror_x = false;
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
 
-    // Actualitzar la llista de tasques i iniciar RTC
-    update_tasks_list();
+    // Iniciar RTC i comptadors d'estadístiques
     stats_init();
 
     // 4. Netejar pantalla
@@ -466,6 +489,8 @@ void setup() {
     epd_framebuffer = epd_hl_get_framebuffer(&highlevel);
     ui_init();
     create_page_buttons();
+    update_tasks_list(); // TAMBÉ INICIA WIFI
+    update_header_time();
     update_page_indicators();
 
     lv_refr_now(lv_disp_get_default());
@@ -476,6 +501,7 @@ void loop() {
     // Actualitzar l'estat del temporitzador Pomodoro i la interfície d'usuari
     pomodoro_update();
     sync_pomodoro_ui();
+    update_header_time();
 
     // Sincronitzar tasques des de Notion cada x temps
     // TODO: En comptes de fer-ho cada 5 minuts, fer-ho només quan es canvia alguna cosa a Notion. Revisar API.

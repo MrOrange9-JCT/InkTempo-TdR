@@ -29,6 +29,14 @@ extern const char *get_var_pomodoro_stage_label();
 extern void set_var_pomodoro_stage_label(const char *value);
 extern const char *get_var_pomodoro_timer();
 extern void set_var_pomodoro_timer(const char *value);
+extern int32_t get_var_focus_counter_value();
+extern void set_var_focus_counter_value(int32_t value);
+extern int32_t get_var_focus_counter_goal();
+extern void set_var_focus_counter_goal(int32_t value);
+extern int32_t get_var_task_counter_value();
+extern void set_var_task_counter_value(int32_t value);
+extern int32_t get_var_task_counter_goal();
+extern void set_var_task_counter_goal(int32_t value);
 
 #ifdef __cplusplus
 }

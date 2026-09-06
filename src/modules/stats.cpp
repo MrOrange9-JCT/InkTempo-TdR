@@ -3,6 +3,9 @@
 #include <Wire.h>
 #include "SensorPCF8563.hpp"
 #include "lilygo_t5s3_board.h"
+#include <Preferences.h>
+
+static Preferences prefs;
 
 static StatCounter focus_counter = {0, 90}; // objectiu de 90 min 
 static StatCounter tasks_counter = {0, 5}; // objectiu de 5 tasques 
@@ -20,6 +23,34 @@ static void reset_counters() {
     tasks_counter.value = 0;
 }
 
+static void save_counters() {
+    prefs.begin("stats", false);
+    prefs.putUInt("focus_min", focus_counter.value);
+    prefs.putUInt("tasks_done", tasks_counter.value);
+    prefs.putUShort("last_year", last_year);
+    prefs.putUChar("last_month", last_month);
+    prefs.putUChar("last_day", last_day);
+    prefs.end();
+}
+
+static void load_counters() {
+    prefs.begin("stats", true);
+    focus_counter.value = prefs.getUInt("focus_min", 0);
+    tasks_counter.value = prefs.getUInt("tasks_done", 0);
+    uint16_t saved_year = prefs.getUShort("last_year", 0);
+    uint8_t saved_month = prefs.getUChar("last_month", 0);
+    uint8_t saved_day = prefs.getUChar("last_day", 0);
+    prefs.end();
+
+    if (saved_year == last_year && saved_month == last_month && saved_day == last_day) {
+        Serial.println("[Stats] Comptadors recuperats de la memòria (mateix dia)");
+    } else {
+        focus_counter.value = 0;
+        tasks_counter.value = 0;
+        Serial.println("[Stats] Dia diferent o sense dades prèvies, comptadors a zero");
+    }
+}
+
 void stats_init() {
     if (!rtc.begin(Wire, LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL)) {
         Serial.println("[Stats] Error: No es pot inicialitzar el sensor RTC PCF8563");
@@ -35,6 +66,7 @@ void stats_init() {
     last_month = datetime.getMonth();
     last_day = datetime.getDay();
 
+    load_counters();
     Serial.printf("[Stats] Inicialitzat amb data %04d-%02d-%02d\n", datetime.getYear(), datetime.getMonth(), datetime.getDay());
 }
 
@@ -66,15 +98,30 @@ void stats_update() {
     if (datetime.getDay() != last_day || datetime.getMonth() != last_month || datetime.getYear() != last_year) {
         last_day = datetime.getDay(); last_month = datetime.getMonth(); last_year = datetime.getYear();
         reset_counters();
+        save_counters();
         Serial.printf("[Stats] Dia canviat a %04d-%02d-%02d, reiniciant comptadors\n", datetime.getYear(), datetime.getMonth(), datetime.getDay());
     }
 }
 
-void stats_add_focus_minutes(uint32_t minutes) { focus_counter.value += minutes; }
-void stats_add_task_completed()                { tasks_counter.value += 1; }
+void stats_add_focus_minutes(uint32_t minutes) { focus_counter.value += minutes; save_counters(); }
+void stats_add_task_completed(bool done) {
+    if (done) {
+        tasks_counter.value += 1;
+    }
+    else { if (tasks_counter.value > 0) {
+            tasks_counter.value -= 1;
+        }
+    }
+    save_counters();
+}
 
 const StatCounter& stats_focus() { return focus_counter; }
 const StatCounter& stats_tasks() { return tasks_counter; }
 
-// void stats_set_focus_goal(uint32_t minutes) { focus_counter.goal = minutes; }
-// void stats_set_tasks_goal(uint32_t count)   { tasks_counter.goal = count; }
+extern "C" uint32_t stats_focus_value() { return focus_counter.value; }
+extern "C" uint32_t stats_focus_goal() { return focus_counter.goal; }
+extern "C" uint32_t stats_tasks_value() { return tasks_counter.value; }
+extern "C" uint32_t stats_tasks_goal() { return tasks_counter.goal; }
+
+extern "C" void stats_set_focus_goal(uint32_t minutes) { focus_counter.goal = minutes; }
+extern "C" void stats_set_tasks_goal(uint32_t count)   { tasks_counter.goal = count; }
