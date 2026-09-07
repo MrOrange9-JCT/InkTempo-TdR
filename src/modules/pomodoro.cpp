@@ -1,13 +1,14 @@
 #include "pomodoro.h"
 #include "stats.h"
+#include "config.h"
 
 #include <Arduino.h>
 
 // Temporitzador Pomodoro
-static const uint32_t FOCUS_DURATION_MS = 25 * 60 * 1000; // 25 min
-static const uint32_t SHORT_BREAK_DURATION_MS = 5 * 60 * 1000; // 5 min
-static const uint32_t LONG_BREAK_DURATION_MS = 10 * 60 * 1000; // 10 min
-static const uint8_t CYCLES_BEFORE_LONG_BREAK = 2;
+static const uint32_t FOCUS_DURATION_MS = POMODORO_FOCUS_MINUTES * 60 * 1000;
+static const uint32_t SHORT_BREAK_DURATION_MS = POMODORO_SHORT_BREAK_MINUTES * 60 * 1000; // 5 min
+static const uint32_t LONG_BREAK_DURATION_MS = POMODORO_LONG_BREAK_MINUTES * 60 * 1000; // 10 min
+static const uint8_t CYCLES_BEFORE_LONG_BREAK = POMODORO_CYCLES_BEFORE_LONG_BREAK;
 
 static PomodoroStage current_stage = POMODORO_READY;
 static PomodoroStage paused_from_stage = POMODORO_READY;

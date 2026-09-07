@@ -1,5 +1,6 @@
 #include "stats.h"
 #include "time.h"
+#include "config.h"
 #include <Wire.h>
 #include "SensorPCF8563.hpp"
 #include "lilygo_t5s3_board.h"
@@ -7,8 +8,8 @@
 
 static Preferences prefs;
 
-static StatCounter focus_counter = {0, 90}; // objectiu de 90 min 
-static StatCounter tasks_counter = {0, 5}; // objectiu de 5 tasques 
+static StatCounter focus_counter = {0, STATS_FOCUS_GOAL_MINUTES}; // objectiu de 90 min 
+static StatCounter tasks_counter = {0, STATS_TASKS_GOAL}; // objectiu de 5 tasques 
 
 static SensorPCF8563 rtc;
 static bool rtc_available = false;
