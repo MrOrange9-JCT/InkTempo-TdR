@@ -40,6 +40,10 @@ static void update_header_time();
 static void task_checked_event(lv_event_t *event);
 static bool pomodoro_theme_active = false;
 
+// Full refresh per netejar ghosting
+static const int FULL_REFRESH_INTERVAL_MS = 10 * 60 * 1000; // 10 minuts
+static unsigned long last_full_refresh = 0;
+
 // Estat de les pàgines
 static uint8_t current_page = 1;
 static lv_obj_t *previous_page_button;
@@ -509,6 +513,15 @@ void loop() {
         last_notion_sync = millis();
         query_notion();
         update_tasks_list();
+    }
+
+    // Refrescar la pantalla (full refresh) per netejar ghosting
+    if (millis() - last_full_refresh >= FULL_REFRESH_INTERVAL_MS) {
+        Serial.println("[EPDiy] Realitzant full refresh per netejar ghosting...");
+        last_full_refresh = millis();
+        epd_poweron();
+        epd_fullclear(&highlevel, 25);
+        epd_poweroff();
     }
 
     ui_tick();
