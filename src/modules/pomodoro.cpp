@@ -14,8 +14,27 @@ static PomodoroStage current_stage = POMODORO_READY;
 static PomodoroStage paused_from_stage = POMODORO_READY;
 static unsigned long start_time = 0;
 static unsigned long elapsed_time = 0;
-static uint8_t cycles_completed = 0;
+static uint8_t focus_count = 0;
+static uint8_t short_break_count = 0;
+static uint8_t long_break_count = 0;
 static String label = "Llest";
+
+static void set_stage_label(PomodoroStage stage) {
+    switch (stage) {
+        case POMODORO_FOCUS:
+            label = "Concentració #" + String(focus_count);
+            break;
+        case POMODORO_SHORT_BREAK:
+            label = "Descans Curt #" + String(short_break_count);
+            break;
+        case POMODORO_LONG_BREAK:
+            label = "Descans Llarg #" + String(long_break_count);
+            break;
+        default:
+            label = "Llest";
+            break;
+    }
+}
 
 static unsigned long get_stage_duration(PomodoroStage stage) {
     switch (stage) {
@@ -34,25 +53,31 @@ static void start_stage(PomodoroStage stage) {
     current_stage = stage;
     start_time = millis();
     elapsed_time = 0;
+    set_stage_label(stage);
+}
 
-    switch (stage) {
-        case POMODORO_FOCUS:
-            label = "Concentració #" + String(cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            break;
-        case POMODORO_SHORT_BREAK:
-            label = "Descans Curt #" + String(cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            break;
-        case POMODORO_LONG_BREAK:
-            label = "Descans Llarg #" + String(cycles_completed + 1); // TODO: Confirmar si es mostra el número correcte
-            break;
-        default:
-            label = "Llest";
-            break;
+static void transition_to_stage(PomodoroStage next_stage) {
+    if (next_stage == POMODORO_FOCUS) {
+        focus_count++;
+    } else if (next_stage == POMODORO_SHORT_BREAK) {
+        short_break_count++;
+    } else if (next_stage == POMODORO_LONG_BREAK) {
+        long_break_count++;
     }
+
+    paused_from_stage = next_stage;
+    current_stage = POMODORO_TRANSITION;
+    start_time = millis();
+    elapsed_time = 0;
+    set_stage_label(next_stage);
 }
 
 void pomodoro_pause() {
-    if (current_stage == POMODORO_READY || current_stage == POMODORO_PAUSED) return;
+    if (current_stage == POMODORO_READY ||
+        current_stage == POMODORO_PAUSED ||
+        current_stage == POMODORO_TRANSITION) {
+        return;
+    }
 
     paused_from_stage = current_stage;
     current_stage = POMODORO_PAUSED;
@@ -63,7 +88,9 @@ extern "C" void pomodoro_toggle() {
     // Alternar entre pausar i reprendre el temporitzador Pomodoro, connectat amb el botó de la interfície d'usuari
     switch (current_stage) {
         case POMODORO_READY:
-            cycles_completed = 0;
+            focus_count = 1;
+            short_break_count = 0;
+            long_break_count = 0;
             start_stage(POMODORO_FOCUS);
             break;
         case POMODORO_FOCUS:
@@ -72,28 +99,31 @@ extern "C" void pomodoro_toggle() {
             pomodoro_pause();
             break;
         case POMODORO_PAUSED:
+        case POMODORO_TRANSITION:
             current_stage = paused_from_stage;
             start_time = millis();
+            elapsed_time = 0;
             break;
     }
 }
 
 void pomodoro_update() {
-    // TODO: Pausar el temporitzador al canviar d'etapa (s'ha de confirmar per començar)
-    
-    if (current_stage == POMODORO_PAUSED || current_stage == POMODORO_READY) return;
+    if (current_stage == POMODORO_PAUSED ||
+        current_stage == POMODORO_READY ||
+        current_stage == POMODORO_TRANSITION) {
+        return;
+    }
 
     const unsigned long elapsed = elapsed_time + (millis() - start_time);
     if (elapsed < get_stage_duration(current_stage)) return;
 
     if (current_stage == POMODORO_FOCUS) {
-        cycles_completed++;
         // Si el residu és 0 --> descans llarg
-        start_stage(cycles_completed % CYCLES_BEFORE_LONG_BREAK == 0
-                        ? POMODORO_LONG_BREAK
-                        : POMODORO_SHORT_BREAK);
+        const bool is_long_break = (focus_count % CYCLES_BEFORE_LONG_BREAK) == 0;
+        const PomodoroStage next_stage = is_long_break ? POMODORO_LONG_BREAK : POMODORO_SHORT_BREAK;
+        transition_to_stage(next_stage);
     } else {
-        start_stage(POMODORO_FOCUS);
+        transition_to_stage(POMODORO_FOCUS);
     }
 }
 
@@ -108,6 +138,11 @@ const char *pomodoro_get_label() {
 
 unsigned long pomodoro_get_remaining_minutes() {
     if (current_stage == POMODORO_READY) return 0;
+
+    if (current_stage == POMODORO_TRANSITION) {
+        const unsigned long duration = get_stage_duration(paused_from_stage);
+        return duration / 1000 / 60;
+    }
 
     // Si està pausat, utilitzar l'etapa des de la qual es va pausar per calcular el temps restant
     const PomodoroStage effective_stage = current_stage == POMODORO_PAUSED

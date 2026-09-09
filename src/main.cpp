@@ -215,7 +215,7 @@ static void apply_pomodoro_theme(bool active) {
 static void sync_pomodoro_ui() {
     static PomodoroStage last_stage = POMODORO_READY;
     PomodoroStage stage = pomodoro_get_stage();
-    bool active = stage != POMODORO_READY && stage != POMODORO_PAUSED; // Està actiu si no està en READY ni PAUSED
+    bool active = stage != POMODORO_READY && stage != POMODORO_PAUSED && stage != POMODORO_TRANSITION; // Està actiu si no està en READY ni PAUSED ni TRANSITION
 
     apply_pomodoro_theme(active);
 

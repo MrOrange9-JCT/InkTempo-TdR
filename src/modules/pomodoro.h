@@ -7,7 +7,8 @@ enum PomodoroStage {
 	POMODORO_FOCUS,
 	POMODORO_SHORT_BREAK,
 	POMODORO_LONG_BREAK,
-	POMODORO_PAUSED
+	POMODORO_PAUSED,
+	POMODORO_TRANSITION
 };
 
 extern "C" void pomodoro_toggle();
