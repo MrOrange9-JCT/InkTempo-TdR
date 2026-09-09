@@ -79,6 +79,8 @@ extern "C" void pomodoro_toggle() {
 }
 
 void pomodoro_update() {
+    // TODO: Pausar el temporitzador al canviar d'etapa (s'ha de confirmar per començar)
+    
     if (current_stage == POMODORO_PAUSED || current_stage == POMODORO_READY) return;
 
     const unsigned long elapsed = elapsed_time + (millis() - start_time);
