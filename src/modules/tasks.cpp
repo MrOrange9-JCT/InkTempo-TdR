@@ -18,8 +18,13 @@ void connect_wifi() {
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
+        
+        if (WiFi.status() == WL_CONNECT_FAILED || WiFi.status() == WL_NO_SSID_AVAIL) {
+            Serial.println(" WiFi connection failed, error code: " + String(WiFi.status()));
+            return;
+        }
     }
-    Serial.println(" Done");
+    Serial.println(" Connected to WiFi");
 }
 
 String format_deadline_cat(const String &iso) {
@@ -49,6 +54,14 @@ String format_deadline_cat(const String &iso) {
 }
 
 void query_notion() {
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("[Notion] WiFi not connected, cannot query Notion");
+        NotionTask error_task = {false, "ERROR", "No hi ha connexió WiFi", "", "error_no_wifi"};
+        tasks.clear();
+        tasks.push_back(error_task);
+        return;
+    }
+
     HTTPClient http;
     String url = "https://api.notion.com/v1/data_sources/" + String(NOTION_DATA_SOURCE) + "/query";
 
@@ -80,7 +93,10 @@ void query_notion() {
         t.done = page["properties"]["Fet"]["checkbox"].as<bool>();
         t.subject = page["properties"]["Matèria"]["select"]["name"].as<String>();
         t.title = page["properties"]["Tasca"]["title"][0]["plain_text"].as<String>();
-        t.deadline = page["properties"]["Data límit"]["date"]["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
+        JsonObject deadline_date = page["properties"]["Data límit"]["date"].as<JsonObject>();
+        if (!deadline_date["start"].isNull()) {
+            t.deadline = deadline_date["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
+        }
         t.id = page["id"].as<String>(); // ID de la pàgina a Notion
         //TODO: Convertir la data a format més llegible (ex. dt. 8 set.)
         
@@ -112,7 +128,7 @@ NotionTask get_task(int index) {
         return tasks[index];
     } else {
         // Retorna una tasca buida si l'índex és fora de rang
-        return NotionTask{false, "", "", ""};
+        return NotionTask{false, "", "", "", ""};
     }
 }
 
@@ -121,6 +137,10 @@ int get_task_count() {
 }
 
 void mark_task_done(int index, bool done) {
+    if (WiFi.status() != WL_CONNECTED) {
+        Serial.println("[Notion] WiFi not connected, cannot update task");
+        return;
+    }
     if (index < tasks.size()) {
         tasks[index].done = done;
         stats_add_task_completed(done); // Incrementa el comptador de tasques completades només si s'ha marcat com a fet

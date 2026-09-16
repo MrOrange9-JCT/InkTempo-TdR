@@ -194,6 +194,9 @@ void create_screen_main() {
                     lv_obj_set_style_pad_bottom(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_bg_opa(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
                     lv_obj_set_style_border_width(tasks_tile, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
+                    lv_obj_clear_flag(tasks_tile, LV_OBJ_FLAG_SCROLL_ELASTIC);
+                    lv_obj_clear_flag(tasks_tile, LV_OBJ_FLAG_SCROLL_MOMENTUM);
+                    lv_obj_set_style_anim_time(tasks_tile, 0, LV_PART_MAIN);
                     create_user_widget_tasks_screen(tasks_tile, 26);
 
                 }

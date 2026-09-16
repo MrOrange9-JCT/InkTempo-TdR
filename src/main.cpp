@@ -251,6 +251,8 @@ void update_tasks_list() {
     for (int i = 0; i < get_task_count(); i++) {
         // Generar una nova fila (tasca) [CODI COPIAT DE ui/screens.c]
         NotionTask task = get_task(i);
+        if (task.title.isEmpty()) continue; // Ignorar tasques sense títol
+
         lv_obj_t *task_row = lv_list_create(task_list);
         lv_obj_set_size(task_row, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
         lv_obj_set_scroll_dir(task_row, LV_DIR_NONE);
@@ -282,6 +284,11 @@ void update_tasks_list() {
         lv_obj_set_style_outline_opa(checkbox, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_text_color(checkbox, lv_color_hex(0x666666), LV_PART_MAIN | LV_STATE_CHECKED);
         lv_obj_add_event_cb(checkbox, task_checked_event, LV_EVENT_VALUE_CHANGED, nullptr);
+        if (task.subject == "ERROR") {
+            lv_obj_add_state(checkbox, LV_STATE_DISABLED);
+            lv_obj_add_flag(checkbox, LV_OBJ_FLAG_HIDDEN);
+        }
+            
 
         lv_obj_t *subject = lv_label_create(task_row);
         lv_label_set_text(subject, task.subject.c_str());
