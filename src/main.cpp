@@ -573,5 +573,5 @@ void loop() {
     lv_timer_handler();
     refresh_pending_frame();
 
-    delay(5);
+    delay(50);
 }

@@ -15,6 +15,7 @@ std::vector<NotionTask> tasks; // Llista de tasques obtingudes de Notion (un vec
 void connect_wifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
     Serial.print("[Notion] Connecting WiFi");
+    WiFi.setSleep(true);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
