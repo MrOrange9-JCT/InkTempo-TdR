@@ -99,6 +99,9 @@ extern "C" void pomodoro_toggle() {
             pomodoro_pause();
             break;
         case POMODORO_PAUSED:
+            current_stage = paused_from_stage;
+            start_time = millis();
+            break;
         case POMODORO_TRANSITION:
             current_stage = paused_from_stage;
             start_time = millis();

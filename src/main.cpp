@@ -55,6 +55,10 @@ String last_remaining_time_str = get_var_pomodoro_timer(); // Inicialitzar amb e
 static const int NOTION_QUERY_INTERVAL_MS = 5 * 60 * 1000; // 5 minuts
 static unsigned long last_notion_sync = 0;
 
+// Bateria
+int vref = 1100; // Valor de referència per a la lectura del voltatge de la bateria (en mV)
+float last_battery_level = 0.0f; // Últim percentatge de la bateria llegit
+
 static void update_header_time() {
     static char last_time[32] = "";
     struct tm timeinfo;
@@ -419,6 +423,17 @@ static void refresh_pending_frame(bool allow_during_touch) {
     epd_hl_update_area(&highlevel, MODE_GL16, epd_ambient_temperature(), full_area);
     epd_poweroff();
 }
+static float read_battery_level() {
+    // Llegir el percentatge de la bateria a partir del voltatge mesurat
+    const float min_voltage = 3.0f;
+    const float max_voltage = 4.2f;
+
+    uint16_t v = analogRead(LILYGO_T5S3_BATT_ADC);
+    float battery_voltage = ((float)v / 4095.0f) * 2.0f * 3.3f * (vref / 1000.0f);
+    float battery_percentage = (battery_voltage - min_voltage) / (max_voltage - min_voltage) * 100.0f;
+
+    return constrain(battery_percentage, 0.0f, 100.0f);
+}
 
 static void lvgl_display_init() {
     lv_init();
@@ -529,10 +544,27 @@ void loop() {
         epd_poweron();
         epd_fullclear(&highlevel, 25);
         epd_poweroff();
+
+        frame_pending = true;
+        refresh_pending_frame();
+    }
+
+    // Nivell de la bateria (en %)
+    float battery_percentage = read_battery_level();
+    if (last_battery_level == 0.0f || (last_battery_level - battery_percentage) >= 1.0f || (last_battery_level != battery_percentage) && last_battery_level == 100.0f || battery_percentage == 100.0f) {
+        char battery_level_text[12];
+        snprintf(battery_level_text, sizeof(battery_level_text), "%d%%", (int)round(battery_percentage));
+
+        Serial.print("[System] Nivell de bateria: ");
+        Serial.println(battery_level_text);
+
+        set_var_battery_level(battery_level_text);
+        last_battery_level = battery_percentage;
     }
 
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();
+
     delay(5);
 }
