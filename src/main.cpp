@@ -56,6 +56,8 @@ static const int NOTION_QUERY_INTERVAL_MS = 5 * 60 * 1000; // 5 minuts
 static unsigned long last_notion_sync = 0;
 
 // Bateria
+static const int BATTERY_CHECK_INTERVAL_MS = 60 * 1000; // 1 minut
+static unsigned long last_battery_check = 0;
 int vref = 1100; // Valor de referència per a la lectura del voltatge de la bateria (en mV)
 float last_battery_level = 0.0f; // Últim percentatge de la bateria llegit
 
@@ -331,6 +333,9 @@ void update_tasks_list() {
             lv_obj_add_state(title, LV_STATE_CHECKED);
             lv_obj_add_state(subject, LV_STATE_CHECKED);
         }
+
+        // Reaplicar tema No-Pomodoro (evitar text blanc sobre blanc)
+        apply_pomodoro_theme_to_object(task_row, false);
     }
 }
 
@@ -550,18 +555,20 @@ void loop() {
     }
 
     // Nivell de la bateria (en %)
-    float battery_percentage = read_battery_level();
-    if (last_battery_level == 0.0f || (last_battery_level - battery_percentage) >= 1.0f || (last_battery_level != battery_percentage) && last_battery_level == 100.0f || battery_percentage == 100.0f) {
-        char battery_level_text[12];
-        snprintf(battery_level_text, sizeof(battery_level_text), "%d%%", (int)round(battery_percentage));
+    if (millis() - last_battery_check >= BATTERY_CHECK_INTERVAL_MS) {
+        last_battery_check = millis();
+        float battery_percentage = read_battery_level();
+        if (last_battery_level == 0.0f || (last_battery_level - battery_percentage) >= 1.0f || (last_battery_level != battery_percentage) && last_battery_level == 100.0f || battery_percentage == 100.0f) {
+            char battery_level_text[12];
+            snprintf(battery_level_text, sizeof(battery_level_text), "%d%%", (int)round(battery_percentage));
 
-        Serial.print("[System] Nivell de bateria: ");
-        Serial.println(battery_level_text);
+            Serial.print("[System] Nivell de bateria: ");
+            Serial.println(battery_level_text);
 
-        set_var_battery_level(battery_level_text);
-        last_battery_level = battery_percentage;
+            set_var_battery_level(battery_level_text);
+            last_battery_level = battery_percentage;
+        }
     }
-
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();
