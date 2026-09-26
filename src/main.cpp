@@ -1,15 +1,18 @@
 #include <Arduino.h>
 #include <Wire.h>
+#include <WiFi.h>
 #include <TouchDrvGT911.hpp>
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
 
 #include <esp_heap_caps.h>
+#include <esp_sleep.h>
 #include <epdiy.h>
 #include <lvgl.h>
 
 #include "lilygo_t5s3_board.h"
+#include "config.h"
 #include "ui/ui.h"
 #include "ui/fonts.h"
 #include "ui/vars.h"
@@ -29,6 +32,10 @@ static uint8_t *epd_framebuffer;
 static uint8_t *gray_buffer;
 static volatile bool frame_pending;
 static volatile bool touch_active;
+static unsigned long last_touch = 0;
+static bool sleep_button_released = false;
+static bool woke_from_button = false;
+static const unsigned long ENTER_SLEEP_MS = (POMODORO_FOCUS_MINUTES * 60 * 1000) + (15 * 60 * 1000); // Temps d'inactivitat: temps de pomodoro + 15 minuts de marge
 static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
@@ -335,7 +342,7 @@ void update_tasks_list() {
         }
 
         // Reaplicar tema No-Pomodoro (evitar text blanc sobre blanc)
-        apply_pomodoro_theme_to_object(task_row, false);
+        //apply_pomodoro_theme_to_object(task_row, !pomodoro_theme_active);
     }
 }
 
@@ -378,6 +385,7 @@ static void lvgl_touch_read(lv_indev_drv_t *driver, lv_indev_data_t *data) {
         data->point.y = (display_height - 1) - touch_x[0];
         data->state = LV_INDEV_STATE_PR;
         touch_active = true;
+        last_touch = millis();
         Serial.printf("[Touch] Touch (%d, %d) -> LVGL (%d, %d)\n",
                       touch_x[0], touch_y[0], data->point.x, data->point.y);
     } else {
@@ -428,6 +436,7 @@ static void refresh_pending_frame(bool allow_during_touch) {
     epd_hl_update_area(&highlevel, MODE_GL16, epd_ambient_temperature(), full_area);
     epd_poweroff();
 }
+
 static float read_battery_level() {
     // Llegir el percentatge de la bateria a partir del voltatge mesurat
     const float min_voltage = 3.0f;
@@ -470,9 +479,34 @@ static void lvgl_display_init() {
     memset(gray_buffer, 0xFF, gray_buffer_size);
 }
 
+static void enter_sleep_mode() {
+    Serial.println("[System] Entrant en mode de suspensió (sleep mode)...");
+    epd_poweron();
+    epd_fullclear(&highlevel, 25);
+    epd_poweroff();
+
+    delay(1000);
+
+    WiFi.disconnect(true);
+
+    delay(100);
+
+    Wire.end();
+    Serial.end();
+
+    esp_sleep_enable_ext1_wakeup(1ULL << LILYGO_T5S3_BUTTON_1, ESP_EXT1_WAKEUP_ANY_LOW);
+    esp_deep_sleep_start();
+}
+
 void setup() {
     Serial.begin(115200);
     delay(1000);
+
+    esp_sleep_wakeup_cause_t wake_cause = esp_sleep_get_wakeup_cause();
+    woke_from_button = wake_cause == ESP_SLEEP_WAKEUP_EXT1;
+    if (woke_from_button) {
+        Serial.println("[System] Despertat pel boto; esperant que es deixi anar...");
+    }
 
     Serial.println("\n=========================================");
     Serial.println("      TREC - Jordi Castro - 2026-27");
@@ -480,6 +514,8 @@ void setup() {
 
     // 1. Inicialitzar botó1 i pantalla tàctil
     pinMode(LILYGO_T5S3_BUTTON_1, INPUT_PULLUP);
+    last_touch = millis();
+    sleep_button_released = !woke_from_button && digitalRead(LILYGO_T5S3_BUTTON_1) == HIGH;
 
     Wire.begin(LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL);
     touch.setPins(-1, LILYGO_T5S3_TOUCH_INT);
@@ -569,6 +605,15 @@ void loop() {
             last_battery_level = battery_percentage;
         }
     }
+
+    if (digitalRead(LILYGO_T5S3_BUTTON_1) == HIGH) {
+        sleep_button_released = true;
+    }
+    if (millis() - last_touch >= ENTER_SLEEP_MS ||
+        (sleep_button_released && digitalRead(LILYGO_T5S3_BUTTON_1) == LOW)) {
+        enter_sleep_mode();
+    }
+
     ui_tick();
     lv_timer_handler();
     refresh_pending_frame();
