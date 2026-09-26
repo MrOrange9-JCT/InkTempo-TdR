@@ -16,7 +16,7 @@ static int day_of_week(int year, int month, int day) {
 }
 
 void format_date_cat(char *buffer, size_t buffer_size, int year, int month, int day) {
-    // Formatejar la data en català amb el format "dg. 1 gen." (dia de la setmana, dia del mes, mes)
+    // Formatejar la data en català amb el format abreujat "dg. 1 gen." (dia de la setmana, dia del mes, mes)
     if (buffer_size == 0) return;
 
     if (month < 1 || month > 12 || day < 1 || day > 31) {

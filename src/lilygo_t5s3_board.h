@@ -11,7 +11,7 @@ extern "C" {
 // LilyGo T5 4.7" ESP32-S3 Hardware Pin Definitions
 #define LILYGO_T5S3_CFG_DATA    GPIO_NUM_13
 #define LILYGO_T5S3_CFG_CLK     GPIO_NUM_12
-#define LILYGO_T5S3_CFG_STR     GPIO_NUM_0
+#define LILYGO_T5S3_CFG_STR     GPIO_NUM_0 // BOOT button
 
 #define LILYGO_T5S3_CKV         GPIO_NUM_38
 #define LILYGO_T5S3_STH         GPIO_NUM_40

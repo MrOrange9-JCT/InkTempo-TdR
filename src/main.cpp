@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <time.h>
+#include <Preferences.h>
 
 #include <esp_heap_caps.h>
 #include <esp_sleep.h>
@@ -21,9 +22,12 @@
 #include "modules/stats.h"
 #include "modules/date_format.h"
 
+static Preferences prefs;
+
 // Controlador tàctil
 static TouchDrvGT911 touch;
 static bool touch_available = false;
+static bool screen_rotated = false;
 
 // Framebuffer d'alt nivell i característiques de la pantalla
 static EpdiyHighlevelState highlevel;
@@ -33,8 +37,12 @@ static uint8_t *gray_buffer;
 static volatile bool frame_pending;
 static volatile bool touch_active;
 static unsigned long last_touch = 0;
-static bool sleep_button_released = false;
 static bool woke_from_button = false;
+static bool button_down = false;
+static unsigned long button_pressed_at = 0;
+static bool long_press_handled = false;
+static bool ignore_button_until_release = false;
+static const unsigned long LONG_PRESS_MS = 1500;
 static const unsigned long ENTER_SLEEP_MS = (POMODORO_FOCUS_MINUTES * 60 * 1000) + (15 * 60 * 1000); // Temps d'inactivitat: temps de pomodoro + 15 minuts de marge
 static const uint16_t display_width = 960;
 static const uint16_t display_height = 540;
@@ -498,6 +506,65 @@ static void enter_sleep_mode() {
     esp_deep_sleep_start();
 }
 
+static void rotate_screen() {
+    // Girar la pantalla 180 graus (per a LilyGo T5-S3 amb pantalla ED047TC1)
+    if (screen_rotated) {
+        Serial.println("[System] Girant pantalla a la posició normal...");
+        epd_set_rotation(EPD_ROT_LANDSCAPE);
+
+        if (touch_available) {
+            touch.setMaxCoordinates(display_width - 1, display_height - 1);
+            touch.setMirrorXY(false, false);
+        }
+
+        screen_rotated = false;
+    } else {
+        Serial.println("[System] Girant pantalla a la posició invertida...");
+        epd_set_rotation(EPD_ROT_INVERTED_LANDSCAPE);
+
+        if (touch_available) {
+            touch.setMaxCoordinates(display_height - 1, display_width - 1);
+            touch.setMirrorXY(true, true);
+        }
+
+        screen_rotated = true;
+    }
+
+    prefs.begin("config", false);
+    prefs.putUInt("rotation", screen_rotated ? EPD_ROT_INVERTED_LANDSCAPE : EPD_ROT_LANDSCAPE);
+    prefs.end();
+
+    frame_pending = true;
+    lv_refr_now(lv_disp_get_default());
+}
+
+static void handle_button() {
+    bool is_down = digitalRead(LILYGO_T5S3_BUTTON_1) == LOW;
+
+    if (is_down && !button_down) {
+        button_down = true;
+        button_pressed_at = millis();
+        long_press_handled = false;
+    }
+
+    if (is_down && button_down && !ignore_button_until_release && !long_press_handled &&
+        millis() - button_pressed_at >= LONG_PRESS_MS) {
+        Serial.println("[System] Botó 1 mantingut premut; entrant en suspensió...");
+        long_press_handled = true;
+        enter_sleep_mode();
+    }
+
+    if (!is_down && button_down) {
+        button_down = false;
+        if (ignore_button_until_release) {
+            ignore_button_until_release = false;
+        } else if (!long_press_handled) {
+            Serial.println("[System] Polsació curta del botó 1; girant pantalla 180 graus...");
+            rotate_screen();
+        }
+    }
+}
+
 void setup() {
     Serial.begin(115200);
     delay(1000);
@@ -512,10 +579,11 @@ void setup() {
     Serial.println("      TREC - Jordi Castro - 2026-27");
     Serial.println("=========================================");
 
+
     // 1. Inicialitzar botó1 i pantalla tàctil
     pinMode(LILYGO_T5S3_BUTTON_1, INPUT_PULLUP);
     last_touch = millis();
-    sleep_button_released = !woke_from_button && digitalRead(LILYGO_T5S3_BUTTON_1) == HIGH;
+    ignore_button_until_release = woke_from_button;
 
     Wire.begin(LILYGO_T5S3_TOUCH_SDA, LILYGO_T5S3_TOUCH_SCL);
     touch.setPins(-1, LILYGO_T5S3_TOUCH_INT);
@@ -535,7 +603,6 @@ void setup() {
     Serial.println("[EPDiy] Iniciant EPDiy per a LilyGo T5-S3 amb pantalla ED047TC1...");
     epd_init(&lilygo_t5s3_board, &ED047TC1, EPD_LUT_64K);
     highlevel = epd_hl_init(EPD_BUILTIN_WAVEFORM);
-    epd_set_rotation(EPD_ROT_LANDSCAPE);
 
     // 3. Inicialitzar Dual Framebuffer + Diff State
     Serial.println("[EPDiy] Assignant buffers de framebuffer a PSRAM...");
@@ -560,7 +627,14 @@ void setup() {
     update_header_time();
     update_page_indicators();
 
-    lv_refr_now(lv_disp_get_default());
+    // 6. Aplicar rotació de pantalla si està configurada a les preferències
+    prefs.begin("config", false);
+    static EpdRotation rotation = static_cast<EpdRotation>(prefs.getUInt("rotation", 0));
+    if (rotation == EPD_ROT_INVERTED_LANDSCAPE) {
+        rotate_screen(); // També fa el primer lv_refr_now()
+    }
+    prefs.end();
+
     refresh_pending_frame();
 }
 
@@ -606,13 +680,13 @@ void loop() {
         }
     }
 
-    if (digitalRead(LILYGO_T5S3_BUTTON_1) == HIGH) {
-        sleep_button_released = true;
-    }
     if (millis() - last_touch >= ENTER_SLEEP_MS ||
-        (sleep_button_released && digitalRead(LILYGO_T5S3_BUTTON_1) == LOW)) {
+        false) {
+        Serial.println("[System] Mode de suspensió activat per inactivitat...");
         enter_sleep_mode();
     }
+
+    handle_button();
 
     ui_tick();
     lv_timer_handler();
