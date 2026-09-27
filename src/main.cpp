@@ -541,6 +541,12 @@ static void rotate_screen() {
 static void handle_button() {
     bool is_down = digitalRead(LILYGO_T5S3_BUTTON_1) == LOW;
 
+    if (!is_down && ignore_button_until_release) {
+        ignore_button_until_release = false;
+        button_down = false;
+        return;
+    }
+
     if (is_down && !button_down) {
         button_down = true;
         button_pressed_at = millis();
