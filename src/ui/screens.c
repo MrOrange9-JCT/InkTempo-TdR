@@ -280,7 +280,7 @@ void create_user_widget_pomodoro_screen(lv_obj_t *parent_obj, int startWidgetInd
             ((lv_obj_t **)&objects)[startWidgetIndex + 2] = obj;
             lv_obj_set_pos(obj, 0, 0);
             lv_obj_set_size(obj, 579, 361);
-            lv_obj_add_event_cb(obj, action_toggle_pomodoro, LV_EVENT_PRESSED, (void *)0);
+            lv_obj_add_event_cb(obj, action_toggle_pomodoro, LV_EVENT_CLICKED, (void *)0);
             lv_obj_set_style_bg_opa(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_shadow_width(obj, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);

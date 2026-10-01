@@ -12,7 +12,7 @@
 
 #define POMODORO_FOCUS_MINUTES 25 // Durada del període de concentració (min)
 #define POMODORO_SHORT_BREAK_MINUTES 5 // Durada del descans curt (min)
-#define POMODORO_LONG_BREAK_MINUTES 15 // Durada del descans llarg (min)
+#define POMODORO_LONG_BREAK_MINUTES 10 // Durada del descans llarg (min)
 #define POMODORO_CYCLES_BEFORE_LONG_BREAK 2 // Nombre de cicles (sessions de concentració) abans del descans llarg
 
 /*====================*

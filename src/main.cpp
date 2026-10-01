@@ -49,11 +49,13 @@ static const uint16_t display_height = 540;
 static const size_t gray_buffer_size = (display_width * display_height + 1) / 2;
 
 static void refresh_pending_frame(bool allow_during_touch = false);
-static void apply_pomodoro_theme(bool active);
 static void sync_pomodoro_ui();
 static void update_header_time();
 static void task_checked_event(lv_event_t *event);
+// Tema Pomodoro: pantalla invertida (fons negre) mentre el temporitzador està en marxa.
+// La inversió es fa al flush (flush_to_epdiy), no estilitzant widgets un per un.
 static bool pomodoro_theme_active = false;
+static bool needs_single_clear = false; // Cal un clear complet abans del proper refresh (evita ghosting)
 
 // Full refresh per netejar ghosting
 static const int FULL_REFRESH_INTERVAL_MS = 10 * 60 * 1000; // 10 minuts
@@ -100,7 +102,7 @@ static void update_page_indicators() {
     set_var_screen_title(page_titles[current_page]);
 
     for (uint8_t index = 0; index < 3; index++) {
-        lv_color_t indicator_color = pomodoro_theme_active ? lv_color_hex(0xffffff) : lv_color_hex(0x000000);
+        lv_color_t indicator_color = lv_color_hex(0x000000); // El tema s'aplica al flush
         lv_obj_set_style_bg_color(dots[index], indicator_color, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_border_color(dots[index], indicator_color, LV_PART_MAIN | LV_STATE_DEFAULT);
         lv_obj_set_style_bg_opa(dots[index], index == current_page ? LV_OPA_COVER : LV_OPA_TRANSP,
@@ -139,6 +141,7 @@ static void page_button_event(lv_event_t *event) {
     lv_obj_set_tile(objects.content, tiles[current_page], LV_ANIM_OFF);
     update_page_indicators();
     update_page_buttons();
+    needs_single_clear = true; // Forçar un clear complet per evitar ghosting
 }
 
 static void tileview_event(lv_event_t *event) {
@@ -154,6 +157,7 @@ static void tileview_event(lv_event_t *event) {
 
     update_page_indicators();
     update_page_buttons();
+    needs_single_clear = true; // Forçar un clear complet per evitar ghosting
 }
 
 static void create_page_buttons() {
@@ -197,40 +201,13 @@ static void create_page_buttons() {
     lv_obj_add_event_cb(objects.content, tileview_event, LV_EVENT_VALUE_CHANGED, NULL);
 }
 
-static lv_color_t pomodoro_theme_color(lv_color_t color, bool active) {
-    bool is_black = LV_COLOR_GET_R(color) == 0 && LV_COLOR_GET_G(color) == 0 && LV_COLOR_GET_B(color) == 0;
-    bool is_white = LV_COLOR_GET_R(color) == 31 && LV_COLOR_GET_G(color) == 63 && LV_COLOR_GET_B(color) == 31;
+static void set_pomodoro_theme(bool active) {
+    if (active == pomodoro_theme_active) return;
+    Serial.println("[EPDiy] Canviant el tema del pomodoro...");
 
-    if (active && is_white) return lv_color_hex(0x000000);
-    if (active && is_black) return lv_color_hex(0xffffff);
-    if (!active && is_black) return lv_color_hex(0xffffff);
-    if (!active && is_white) return lv_color_hex(0x000000);
-    return color;
-}
-
-static void apply_pomodoro_theme_to_object(lv_obj_t *object, bool active) {
-    lv_style_selector_t selector = LV_PART_MAIN | LV_STATE_DEFAULT;
-    lv_obj_set_style_bg_color(object, pomodoro_theme_color(lv_obj_get_style_bg_color(object, selector), active), selector);
-    lv_obj_set_style_text_color(object, pomodoro_theme_color(lv_obj_get_style_text_color(object, selector), active), selector);
-    lv_obj_set_style_border_color(object, pomodoro_theme_color(lv_obj_get_style_border_color(object, selector), active), selector);
-    lv_obj_set_style_line_color(object, pomodoro_theme_color(lv_obj_get_style_line_color(object, selector), active), selector);
-    lv_obj_set_style_outline_color(object, pomodoro_theme_color(lv_obj_get_style_outline_color(object, selector), active), selector);
-    lv_obj_set_style_shadow_color(object, pomodoro_theme_color(lv_obj_get_style_shadow_color(object, selector), active), selector);
-
-    for (uint32_t child_index = 0; child_index < lv_obj_get_child_cnt(object); child_index++) {
-        apply_pomodoro_theme_to_object(lv_obj_get_child(object, child_index), active);
-    }
-}
-
-static void apply_pomodoro_theme(bool active) {
-    if (pomodoro_theme_active == active || objects.main == nullptr) return;
-
-    apply_pomodoro_theme_to_object(objects.main, active);
-    for (lv_obj_t *surface : {objects.content, objects.obj0, objects.obj1, objects.obj2}) {
-        lv_obj_set_style_bg_opa(surface, active ? LV_OPA_COVER : LV_OPA_TRANSP,
-                                LV_PART_MAIN | LV_STATE_DEFAULT);
-    }
     pomodoro_theme_active = active;
+    needs_single_clear = true;  // Una inversió B/N sense clear deixa ghosting a l'e-paper
+    lv_obj_invalidate(lv_scr_act());    // Forçar redibuixat complet; el flush aplicarà la inversió
 }
 
 static void sync_pomodoro_ui() {
@@ -238,12 +215,13 @@ static void sync_pomodoro_ui() {
     PomodoroStage stage = pomodoro_get_stage();
     bool active = stage != POMODORO_READY && stage != POMODORO_PAUSED && stage != POMODORO_TRANSITION; // Està actiu si no està en READY ni PAUSED ni TRANSITION
 
-    apply_pomodoro_theme(active);
-
     if (stage != last_stage) {
         set_var_pomodoro_stage_label(pomodoro_get_label());
+        ui_tick();
         last_stage = stage;
     }
+
+    set_pomodoro_theme(active);
 
     if (stage != POMODORO_READY) {
         unsigned long remaining_minutes = pomodoro_get_remaining_minutes();
@@ -349,8 +327,6 @@ void update_tasks_list() {
             lv_obj_add_state(subject, LV_STATE_CHECKED);
         }
 
-        // Reaplicar tema No-Pomodoro (evitar text blanc sobre blanc)
-        //apply_pomodoro_theme_to_object(task_row, !pomodoro_theme_active);
     }
 }
 
@@ -414,6 +390,7 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
     uint16_t width = lv_area_get_width(area);
     uint16_t height = lv_area_get_height(area);
     uint16_t row_bytes = (display_width + 1) / 2;
+    const bool invert = pomodoro_theme_active; // Llegir-ho una sola vegada per flush
 
     for (uint16_t y = 0; y < height; y++) {
         for (uint16_t x = 0; x < width; x++) {
@@ -421,6 +398,7 @@ static void flush_to_epdiy(lv_disp_drv_t *display, const lv_area_t *area, lv_col
             uint16_t display_y = (uint16_t)(area->y1 + y);
             uint8_t *packed = &gray_buffer[display_y * row_bytes + display_x / 2];
             uint8_t gray = color_to_gray(colors[y * width + x]);
+            if (invert) gray = 15 - gray;
 
             if ((display_x & 1U) == 0) {
                 *packed = (uint8_t)((*packed & 0xF0U) | gray);
@@ -439,9 +417,21 @@ static void refresh_pending_frame(bool allow_during_touch) {
 
     EpdRect full_area = { .x = 0, .y = 0, .width = display_width, .height = display_height };
     frame_pending = false;
+
+    if (needs_single_clear) {
+        needs_single_clear = false;
+        Serial.println("[EPDiy] Realitzant un clear individual...");
+        epd_poweron();
+        epd_clear_area_cycles(full_area, 1, 25);
+        epd_poweroff();
+
+        // The clear changes the panel without updating EPDiy's previous-frame buffer.
+        memset(highlevel.back_fb, 0xFF, (display_width / 2) * display_height);
+    }
+
     epd_draw_rotated_image(full_area, gray_buffer, epd_framebuffer);
     epd_poweron();
-    epd_hl_update_area(&highlevel, MODE_GL16, epd_ambient_temperature(), full_area);
+    epd_hl_update_area(&highlevel,  MODE_GL16, epd_ambient_temperature(), full_area);
     epd_poweroff();
 }
 
@@ -645,10 +635,18 @@ void setup() {
 }
 
 void loop() {
-    // Actualitzar l'estat del temporitzador Pomodoro i la interfície d'usuari
-    pomodoro_update();
-    sync_pomodoro_ui();
-    update_header_time();
+    // Serial.printf("[DEBUG] ms=%lu heap=%u min_heap=%u psram=%u internal_max=%u psram_max=%u stage=%d touch=%d frame=%d last_touch=%lu\n",
+    //               millis(),
+    //               ESP.getFreeHeap(),
+    //               ESP.getMinFreeHeap(),
+    //               ESP.getFreePsram(),
+    //               heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL),
+    //               heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM),
+    //               (int)pomodoro_get_stage(),
+    //               touch_active,
+    //               frame_pending,
+    //               millis() - last_touch);
+
 
     // Sincronitzar tasques des de Notion cada x temps
     // TODO: En comptes de fer-ho cada 5 minuts, fer-ho només quan es canvia alguna cosa a Notion. Revisar API.
@@ -694,9 +692,19 @@ void loop() {
 
     handle_button();
 
-    ui_tick();
     lv_timer_handler();
+
+    // Actualitzar l'estat del temporitzador Pomodoro i la interfície d'usuari
+    pomodoro_update();
+    sync_pomodoro_ui();
+    update_header_time();
+
+    // Actualitzar la interfície d'usuari
+    ui_tick();
+    lv_refr_now(lv_disp_get_default());
+    // Serial.println("[DEBUG] before refresh_pending_frame");
     refresh_pending_frame();
+    // Serial.println("[DEBUG] after refresh_pending_frame");
 
     delay(50);
 }
