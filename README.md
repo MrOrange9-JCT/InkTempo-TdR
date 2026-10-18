@@ -110,7 +110,7 @@ Els noms exactes de les constants han de coincidir amb els que espera el codi.
 
 Perquè la sincronització funcioni correctament, cal utilitzar una base de dades de Notion amb les propietats esperades per `tasks.cpp`.
 
-**Plantilla de Notion:** [afegir aquí l’enllaç a la plantilla]
+**Plantilla de Notion:** [enllaç a la plantilla pública](https://bedecked-metacarpal-d74.notion.site/InkTempo-Plantilla-de-base-de-dades-3fd0a631f1828051b91fdd52a2b1b4ae)
 
 Un cop duplicada la plantilla, cal crear una integració a Notion, compartir-hi la base de dades i introduir el token i l’identificador de la base de dades a `secrets.h`.
 
