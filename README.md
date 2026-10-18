@@ -1,4 +1,15 @@
-# InkTempo
+<!--
+Source - https://stackoverflow.com/a/70200610
+Posted by Giorgos Xou, modified by community. See post 'Timeline' for change history
+Retrieved 2026-10-18, License - CC BY-SA 4.0
+-->
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_light.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_dark.png">
+</picture>
+
+# Jordi Castro — TdR: Desenvolupament d’un gestor de productivitat IoT amb pantalla de tinta electrònica
 
 Gestor digital de la productivitat personal desenvolupat per a la placa **LILYGO T5-S3**, que incorpora un microcontrolador ESP32-S3, una pantalla tàctil de tinta electrònica i un connector per a bateria de liti.
 
