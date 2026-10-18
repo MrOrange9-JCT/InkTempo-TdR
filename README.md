@@ -23,16 +23,16 @@ Els primers codis de prova es van compilar amb Arduino IDE. Tanmateix, a causa d
 
 Les biblioteques més importants són:
 
-- **EPDiy**, un controlador per a pantalles de tinta electrònica econòmiques, amb una capa de compatibilitat per a la LILYGO T5-S3.
-- **LVGL** (*Light and Versatile Graphics Library*), utilitzada per desenvolupar la interfície gràfica.
-- **ArduinoJson**, que permet interpretar les respostes JSON de l’API de Notion.
+- **[EPDiy](https://github.com/vroland/epdiy)**, un controlador per a pantalles de tinta electrònica econòmiques, amb una [capa de compatibilitat](https://github.com/redstoneleo/EPDiy-T5S3) per a la LILYGO T5-S3.
+- **[LVGL](https://github.com/lvgl/lvgl)** (*Light and Versatile Graphics Library*), utilitzada per desenvolupar la interfície gràfica.
+- **[ArduinoJson](https://github.com/bblanchon/ArduinoJson)**, que permet interpretar les respostes JSON de l’API de Notion.
 - Biblioteques i dependències pròpies de la placa LILYGO T5-S3, necessàries per controlar la pantalla, el panell tàctil i el rellotge en temps real.
 
 L'arxiu [`platformio.ini`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/platformio.ini) pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
 
 ## Estructura del codi
 
-La carpeta arrel conté l’arxiu principal `main.cpp`, els arxius de configuració i les carpetes `ui/` i `modules/`:
+La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/src/main.cpp), els arxius de configuració i les carpetes [`ui/`](https://github.com/MrOrange9-JCT/InkTempo-TdR/tree/main/src/ui) i [`modules/`](https://github.com/MrOrange9-JCT/InkTempo-TdR/tree/main/src/modules):
 
 ```text
 .
@@ -51,7 +51,7 @@ La carpeta arrel conté l’arxiu principal `main.cpp`, els arxius de configurac
 └── README.md
 ```
 
-Els arxius de `ui/` han estat generats amb **EEZ Studio**, una eina que permet dissenyar una GUI de manera visual i generar-ne el codi per a LVGL. Els arxius de `modules/`, en canvi, contenen la lògica pròpia del projecte.
+Els arxius de `ui/` han estat generats amb [**EEZ Studio**](https://github.com/eez-open/studio), una eina que permet dissenyar una GUI de manera visual i generar-ne el codi per a LVGL. Els arxius de `modules/`, en canvi, contenen la lògica pròpia del projecte.
 
 ### `main.cpp`
 
@@ -88,6 +88,7 @@ El fitxer `secrets.h` no s’ha de publicar amb credencials reals. Com a mínim,
 #define NOTION_TOKEN "secret_de_notion"
 #define NOTION_DATABASE_ID "id_de_la_base_de_dades"
 ```
+> Aquestes són les variables necessàries. Podeu trobar la plantilla a [`secrets.h.template`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/src/secrets.h.template)
 
 Els noms exactes de les constants han de coincidir amb els que espera el codi.
 
@@ -98,8 +99,6 @@ Perquè la sincronització funcioni correctament, cal utilitzar una base de dade
 **Plantilla de Notion:** [afegir aquí l’enllaç a la plantilla]
 
 Un cop duplicada la plantilla, cal crear una integració a Notion, compartir-hi la base de dades i introduir el token i l’identificador de la base de dades a `secrets.h`.
-
-No s’ha d’incloure mai el token de Notion en commits públics ni en fitxers compartits.
 
 ## Instal·lació i ús
 
