@@ -28,7 +28,7 @@ Les biblioteques més importants són:
 - **ArduinoJson**, que permet interpretar les respostes JSON de l’API de Notion.
 - Biblioteques i dependències pròpies de la placa LILYGO T5-S3, necessàries per controlar la pantalla, el panell tàctil i el rellotge en temps real.
 
-L'arxiu https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/platformio.ini pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
+L'arxiu [`platformio.ini`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/platformio.ini) pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
 
 ## Estructura del codi
 
