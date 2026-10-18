@@ -2,8 +2,8 @@
 <p align="center">
   <center>Jordi Castro — Treball de Recerca — 2026</center>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_light.png">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_dark.png">
+    <source media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/Xk6LxQfD/inktempo-logo-light.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
   </picture>
 </p>
 
