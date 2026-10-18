@@ -61,7 +61,7 @@ La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](https://github.c
 ├── platformio.ini
 ├── lv_conf.h
 ├── config.h
-├── secrets.h
+├── secrets.h.template
 └── README.md
 ```
 
@@ -120,7 +120,7 @@ El fitxer `secrets.h` no s’ha de publicar amb credencials reals. Com a mínim,
 #define WIFI_SSID "nom_de_la_xarxa"
 #define WIFI_PASSWORD "contrasenya_de_la_xarxa"
 #define NOTION_TOKEN "secret_de_notion"
-#define NOTION_DATABASE_ID "id_de_la_base_de_dades"
+#define NOTION_DATA_SOURCE "id_de_la_font_de_dades"
 ```
 > Aquestes són les variables necessàries. Podeu trobar la plantilla a [`secrets.h.template`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/src/secrets.h.template)
 
