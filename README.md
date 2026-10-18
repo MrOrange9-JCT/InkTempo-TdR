@@ -87,6 +87,26 @@ Controla i emmagatzema les estadístiques d’ús i concentració. També s’en
 
 Inicialitza el Wi-Fi i integra l’API de Notion. Un cop rebudes les dades en format JSON, aquestes es tracten i se sanegen, es converteixen les dates i s’ordenen segons la data límit i l’estat de cada tasca.
 
+
+
+## Instal·lació
+
+1. Instal·la Visual Studio Code i l’extensió de PlatformIO.
+2. Clona el repositori:
+
+   ```bash
+   git clone https://github.com/MrOrange9-JCT/InkTempo-TdR.git
+   cd InkTempo-TdR
+   ```
+
+3. Revisa `platformio.ini` i comprova que la configuració correspon a la placa utilitzada.
+4. Completa `secrets.h` i ajusta `config.h` segons les teves preferències.
+5. Connecta la LILYGO T5-S3 mitjançant USB-C.
+6. Compila el projecte i puja el codi amb PlatformIO.
+7. Reinicia el dispositiu i comprova la connexió, l’hora i la càrrega de les tasques.
+
+Si la placa no entra automàticament en mode de càrrega, cal prémer els botons **BOOT** i **RST** alhora per alliberar el *bootloader*.
+
 ## Configuració
 
 Per configurar el programa segons les preferències de l’usuari, cal revisar els arxius següents:
@@ -114,23 +134,7 @@ Perquè la sincronització funcioni correctament, cal utilitzar una base de dade
 
 Un cop duplicada la plantilla, cal crear una integració a Notion, compartir-hi la base de dades i introduir el token i l’identificador de la base de dades a `secrets.h`.
 
-## Instal·lació i ús
-
-1. Instal·la Visual Studio Code i l’extensió de PlatformIO.
-2. Clona el repositori:
-
-   ```bash
-   git clone https://github.com/MrOrange9-JCT/InkTempo-TdR.git
-   cd InkTempo-TdR
-   ```
-
-3. Revisa `platformio.ini` i comprova que la configuració correspon a la placa utilitzada.
-4. Completa `secrets.h` i ajusta `config.h` segons les teves preferències.
-5. Connecta la LILYGO T5-S3 mitjançant USB-C.
-6. Compila el projecte i puja el codi amb PlatformIO.
-7. Reinicia el dispositiu i comprova la connexió, l’hora i la càrrega de les tasques.
-
-Si la placa no entra automàticament en mode de càrrega, cal prémer els botons **BOOT** i **RST** alhora per alliberar el *bootloader*.
+## Ús del dispositiu
 
 Per utilitzar el dispositiu:
 
