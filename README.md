@@ -157,3 +157,7 @@ Aquest repositori conté el programari del dispositiu i complementa l’explicac
 - Els desenvolupadors d’EPDiy i LVGL.
 - Redstoneleo, per la capa de compatibilitat amb la LILYGO T5-S3.
 - Notion, per l’API utilitzada en la sincronització de tasques.
+
+## Llicència
+
+Aquest projecte es distribueix sota la llicència MIT. Consulta [`LICENSE`](LICENSE) per obtenir-ne el text complet.
