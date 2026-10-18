@@ -67,6 +67,8 @@ void query_notion() {
     String url = "https://api.notion.com/v1/data_sources/" + String(NOTION_DATA_SOURCE) + "/query";
 
     http.begin(url);
+    http.setConnectTimeout(10000);
+    http.setTimeout(15000);
     http.addHeader("Authorization", String("Bearer ") + NOTION_TOKEN);
     http.addHeader("Content-Type", "application/json");
     http.addHeader("Notion-Version", "2026-03-11");
@@ -80,22 +82,46 @@ void query_notion() {
     }
 
     String payload = http.getString();
-    http.end();
+    Serial.println("[Notion] Response bytes: " + String(payload.length()));
+    if (payload.isEmpty()) {
+        Serial.println("[Notion] Empty response body");
+        http.end();
+        return;
+    }
 
     JsonDocument doc;
-    deserializeJson(doc, payload);
+    DeserializationError parse_error = deserializeJson(doc, payload);
+    if (parse_error) {
+        Serial.println("[Notion] JSON parse error: " + String(parse_error.c_str()));
+        http.end();
+        return;
+    }
+
+    JsonArray results = doc["results"].as<JsonArray>();
+    if (results.isNull()) {
+        Serial.println("[Notion] Response has no results array");
+        http.end();
+        return;
+    }
 
     tasks.clear();
+    tasks.reserve(results.size());
 
-    for (int i = 0; i < (int)doc["results"].size(); i++) {
-        JsonObject page = doc["results"][i];
+    for (JsonObject page : results) {
+        JsonObject properties = page["properties"].as<JsonObject>();
+        JsonArray title = properties["Tasca"]["title"].as<JsonArray>();
+        JsonObject subject = properties["Matèria"]["select"].as<JsonObject>();
+        JsonObject deadline_date = properties["Data límit"]["date"].as<JsonObject>();
+        if (properties.isNull() || title.isNull() || subject.isNull()) {
+            Serial.println("[Notion] Skipping page with unexpected properties");
+            continue;
+        }
 
         NotionTask t;
-        t.done = page["properties"]["Fet"]["checkbox"].as<bool>();
-        t.subject = page["properties"]["Matèria"]["select"]["name"].as<String>();
-        t.title = page["properties"]["Tasca"]["title"][0]["plain_text"].as<String>();
-        JsonObject deadline_date = page["properties"]["Data límit"]["date"].as<JsonObject>();
-        if (!deadline_date["start"].isNull()) {
+        t.done = properties["Fet"]["checkbox"].as<bool>();
+        t.subject = subject["name"].as<String>();
+        t.title = title[0]["plain_text"].as<String>();
+        if (!deadline_date.isNull() && !deadline_date["start"].isNull()) {
             t.deadline = deadline_date["start"].as<String>(); // Data en format ISO 8601 (YYYY-MM-DDTHH:MM:SSZ+Offset)
         }
         t.id = page["id"].as<String>(); // ID de la pàgina a Notion
@@ -109,6 +135,8 @@ void query_notion() {
         // Serial.println("  Subject:  " + t.subject);
         // Serial.println("  Deadline: " + t.deadline);
     }
+
+    http.end();
 
     // Primer les tasques pendents i després les fetes; dins de cada grup, per data límit ascendent
     std::sort(tasks.begin(), tasks.end(), [](const NotionTask &a, const NotionTask &b) {
