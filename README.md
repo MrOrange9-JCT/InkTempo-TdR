@@ -42,11 +42,11 @@ Les biblioteques més importants són:
 - **[ArduinoJson](https://github.com/bblanchon/ArduinoJson)**, que permet interpretar les respostes JSON de l’API de Notion.
 - Biblioteques i dependències pròpies de la placa LILYGO T5-S3, necessàries per controlar la pantalla, el panell tàctil i el rellotge en temps real.
 
-L'arxiu [`platformio.ini`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/platformio.ini) pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
+L'arxiu [`platformio.ini`](platformio.ini) pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
 
 ## Estructura del codi
 
-La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/src/main.cpp), els arxius de configuració i les carpetes [`ui/`](https://github.com/MrOrange9-JCT/InkTempo-TdR/tree/main/src/ui) i [`modules/`](https://github.com/MrOrange9-JCT/InkTempo-TdR/tree/main/src/modules):
+La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](src/main.cpp), els arxius de configuració i les carpetes [`ui/`](src/ui/) i [`modules/`](src/modules/):
 
 ```text
 .
@@ -122,7 +122,7 @@ El fitxer `secrets.h` no s’ha de publicar amb credencials reals. Com a mínim,
 #define NOTION_TOKEN "secret_de_notion"
 #define NOTION_DATA_SOURCE "id_de_la_base_de_dades"
 ```
-> Aquestes són les variables necessàries. Podeu trobar la plantilla a [`secrets.h.template`](https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/src/secrets.h.template)
+> Aquestes són les variables necessàries. Podeu trobar la plantilla a [`secrets.h.template`](src/secrets.h.template)
 
 Els noms exactes de les constants han de coincidir amb els que espera el codi.
 
