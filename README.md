@@ -9,10 +9,10 @@ Aquest projecte forma part del Treball de Recerca i té com a objectiu implement
 ## Funcions principals
 
 - Temporitzador basat en el mètode Pomodoro.
-- Sessions de concentració, descansos curts i descansos llargs.
+   - Sessions de concentració, descansos curts i descansos llargs.
 - Estadístiques diàries, com ara el temps de concentració i les tasques completades.
 - Sincronització de tasques amb una base de dades de Notion.
-- Actualització de l’estat de les tasques des del dispositiu.
+   - Actualització de l’estat de les tasques des del dispositiu.
 - Rellotge en temps real sincronitzat amb el servidor `pool.ntp.org`.
 - Interfície gràfica minimalista amb tres pàgines: **Pomodoro**, **Estadístiques** i **Tasques**.
 - Canvi d’orientació de la interfície i mode de repòs profund.
