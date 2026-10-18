@@ -1,15 +1,12 @@
-<!--
-Source - https://stackoverflow.com/a/70200610
-Posted by Giorgos Xou, modified by community. See post 'Timeline' for change history
-Retrieved 2026-10-18, License - CC BY-SA 4.0
--->
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_light.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_dark.png">
-</picture>
+<p align="center">
+  <center>Jordi Castro — Treball de Recerca — 2026</center>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_light.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MrOrange9-JCT/InkTempo-TdR/refs/heads/main/img/inktempo_logo_dark.png">
+  </picture>
+</p>
 
-<center>Jordi Castro — Treball de Recerca — 2026</center>
 
 # Desenvolupament d’un gestor de productivitat IoT amb pantalla de tinta electrònica
 
