@@ -8,7 +8,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/Xk6LxQfD/inktempo-logo-light.png">
     <source media="(prefers-color-scheme: light)" srcset="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
-    <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
+    <img alt="InkTempo" src="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
   </picture>
 </p>
 
