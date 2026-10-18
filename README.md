@@ -14,7 +14,7 @@
 
 # Desenvolupament d’un gestor de productivitat IoT amb pantalla de tinta electrònica
 
-Gestor digital de la productivitat personal desenvolupat per a la placa **LILYGO T5-S3**, que incorpora un microcontrolador ESP32-S3, una pantalla tàctil de tinta electrònica i un connector per a bateria de liti.
+InkTempo és un gestor digital de la productivitat personal desenvolupat per a la placa **LILYGO T5-S3**, que incorpora un microcontrolador ESP32-S3, una pantalla tàctil de tinta electrònica i un connector per a bateria de liti.
 
 Aquest projecte forma part del Treball de Recerca i té com a objectiu implementar una aplicació pràctica de la tinta electrònica per al seguiment de tasques i la millora de la concentració. Per aconseguir un dispositiu amb avantatges sobre una agenda de paper, s’hi han incorporat funcions com el mètode Pomodoro i la connexió amb l’API de Notion.
 
