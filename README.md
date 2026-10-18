@@ -1,7 +1,9 @@
-
 <p align="center">
   Jordi Castro — Treball de Recerca — 2026
   <hr>
+</p>
+
+<p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/Xk6LxQfD/inktempo-logo-light.png">
     <source media="(prefers-color-scheme: light)" srcset="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
