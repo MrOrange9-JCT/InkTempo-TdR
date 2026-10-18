@@ -19,7 +19,7 @@ Aquest projecte forma part del Treball de Recerca i té com a objectiu implement
 
 ## Programari utilitzat
 
-Els primers codis de prova es van compilar amb Arduino IDE. Tanmateix, a causa de les limitacions d’aquest programari —com ara la gestió global de les biblioteques i la impossibilitat d’utilitzar subcarpetes amb comoditat—, el desenvolupament principal s’ha fet amb **PlatformIO**, instal·lat dins de Visual Studio Code.
+Els primers codis de prova es van compilar amb Arduino IDE. Tanmateix, a causa de les limitacions d’aquest programari (com ara la gestió global de les biblioteques i la impossibilitat d’utilitzar subcarpetes amb comoditat), el desenvolupament principal s’ha fet amb **PlatformIO**, instal·lat dins de Visual Studio Code.
 
 Les biblioteques més importants són:
 
@@ -27,6 +27,8 @@ Les biblioteques més importants són:
 - **LVGL** (*Light and Versatile Graphics Library*), utilitzada per desenvolupar la interfície gràfica.
 - **ArduinoJson**, que permet interpretar les respostes JSON de l’API de Notion.
 - Biblioteques i dependències pròpies de la placa LILYGO T5-S3, necessàries per controlar la pantalla, el panell tàctil i el rellotge en temps real.
+
+L'arxiu https://github.com/MrOrange9-JCT/InkTempo-TdR/blob/main/platformio.ini pot servir com a plantilla per a la placa LILYGO T5-S3 en concret.
 
 ## Estructura del codi
 
