@@ -10,6 +10,7 @@ Retrieved 2026-10-18, License - CC BY-SA 4.0
 </picture>
 
 <center>Jordi Castro — Treball de Recerca — 2026</center>
+
 # Desenvolupament d’un gestor de productivitat IoT amb pantalla de tinta electrònica
 
 Gestor digital de la productivitat personal desenvolupat per a la placa **LILYGO T5-S3**, que incorpora un microcontrolador ESP32-S3, una pantalla tàctil de tinta electrònica i un connector per a bateria de liti.
