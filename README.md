@@ -1,6 +1,7 @@
 <p align="center">
   Jordi Castro — Treball de Recerca — 2026
   <br>
+  <br>
 </p>
 
 <p align="center">
