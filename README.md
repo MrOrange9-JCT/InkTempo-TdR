@@ -5,6 +5,7 @@
     <source media="(prefers-color-scheme: light)" srcset="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
     <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://i.ibb.co/8DwTh3Xf/inktempo-logo-dark.png">
   </picture>
+  <br>
   Jordi Castro — Treball de Recerca — 2026
 </p>
 
