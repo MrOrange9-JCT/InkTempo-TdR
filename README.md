@@ -1,5 +1,5 @@
 <p align="center">
-  Jordi Castro — Treball de Recerca — 2026
+  Jordi Castro © 2026 — Treball de Recerca
   <br>
   <br>
 </p>
@@ -18,7 +18,7 @@ InkTempo és un gestor digital de la productivitat personal desenvolupat per a l
 
 Aquest projecte forma part del Treball de Recerca i té com a objectiu implementar una aplicació pràctica de la tinta electrònica per al seguiment de tasques i la millora de la concentració. Per aconseguir un dispositiu amb avantatges sobre una agenda de paper, s’hi han incorporat funcions com el mètode Pomodoro i la connexió amb l’API de Notion.
 
-> El programa ha estat dissenyat principalment per satisfer les necessitats de l’autor i per funcionar amb una LILYGO T5-S3 amb pantalla tàctil. Tot i així, el codi es pot utilitzar i modificar lliurement, sempre i quan sigui sense ànim de lucre. L'AUTOR NO ES FA RESPONSABLE DEL MAL ÚS DEL CODI.
+> El programa ha estat dissenyat principalment per satisfer les necessitats de l’autor i per funcionar amb una LILYGO T5-S3 amb pantalla tàctil. Tot i així, el codi es pot utilitzar i modificar lliurement, sempre i quan sigui sense ànim de lucre. Vegeu [`LICENSE`](LICENSE) o l'apartat **Llicència** al final d'aquest README.
 
 ## Funcions principals
 
@@ -160,4 +160,6 @@ Aquest repositori conté el programari del dispositiu i complementa l’explicac
 
 ## Llicència
 
-Aquest projecte es distribueix sota la llicència MIT. Consulta [`LICENSE`](LICENSE) per obtenir-ne el text complet.
+Aquest projecte es distribueix sota la llicència PolyForm Noncommercial 1.0.0.
+
+Això vol dir que pots usar-lo, modificar-lo i compartir-lo lliurement per a finalitats no comercials, com ara estudi personal, recerca, docència o projectes d'entitats educatives i sense ànim de lucre, sempre que mantinguis l'avís de drets d'autor i la llicència. L'ús comercial no està permès sense una autorització prèvia. Consulta [`LICENSE`](LICENSE) per obtenir-ne el text complet.
