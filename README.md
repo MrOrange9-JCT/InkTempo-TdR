@@ -52,6 +52,8 @@ La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](src/main.cpp), e
 .
 ├── src/
 │   ├── main.cpp
+│   ├── config.h
+│   ├── secrets.h
 │   ├── modules/
 │   │   ├── date_format.cpp
 │   │   ├── pomodoro.cpp
@@ -60,8 +62,6 @@ La carpeta arrel `src/` conté l’arxiu principal [`main.cpp`](src/main.cpp), e
 │   └── ui/
 ├── platformio.ini
 ├── lv_conf.h
-├── config.h
-├── secrets.h
 └── README.md
 ```
 
